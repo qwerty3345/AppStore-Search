@@ -9,7 +9,7 @@ import Foundation
 
 enum NetworkError: LocalizedError {
   case transportError(Error)
-  case responseError(statusCode: Int)
+  case invalidStatusCode
   case invalidData
   case invalidURL
   case parseError
@@ -18,8 +18,8 @@ enum NetworkError: LocalizedError {
     switch self {
     case .transportError(let error):
       return "에러: \(error.localizedDescription)"
-    case .responseError(let statusCode):
-      return "서버에러 상태코드: \(statusCode)"
+    case .invalidStatusCode:
+      return "서버 응답 코드 에러"
     case .invalidData:
       return "유효하지 않은 데이터입니다."
     case .invalidURL:
