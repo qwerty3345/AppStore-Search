@@ -14,11 +14,11 @@ enum SearchState {
 }
 
 struct SearchView: View {
-  @State private var searchText = "aa"
+  @State private var searchText = ""
   @State private var searchState: SearchState = .recent
 
   let mockRecentSearch = ["최근검색1", "최근검색2"]
-  let mockSuggestion = ["제안1", "제안2"]
+  let mockSuggestion = ["제안1", "제안2", "제안3", "제안4"]
   let mockSearchResult = ["검색결과1", "검색결과2"]
 
   var body: some View {
@@ -85,26 +85,20 @@ struct SearchView: View {
         // TODO: 여기서 특정 아이템이 눌렸을 때, 실제 검색을 trigger
         searchText = data
       } label: {
-        Text(data)
-          .foregroundColor(.blue)
-          .font(.title3)
+        HStack(spacing: 0) {
+          Text("")  // Image가 가장 앞에 있으면 Divider가 살짝 잘리는 이슈 때문에 추가함.
+
+          Image(systemName: "magnifyingglass")
+            .padding(.trailing, 8)
+          Text(data)
+        }
       }
     }
     .listStyle(.plain)
   }
 
   private var searchResultList: some View {
-    List(mockSearchResult, id: \.self) { data in
-      Button {
-        // TODO: 여기서 특정 아이템이 눌렸을 때, 실제 검색을 trigger
-        searchText = data
-      } label: {
-        Text(data)
-          .foregroundColor(.blue)
-          .font(.title3)
-      }
-    }
-    .listStyle(.plain)
+    Text("검색 결과 표출")
   }
 }
 
