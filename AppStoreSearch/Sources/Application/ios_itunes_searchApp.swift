@@ -9,9 +9,9 @@ import SwiftUI
 
 @main
 struct ios_itunes_searchApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+  var body: some Scene {
+    WindowGroup {
+      MainTabView()
     }
+  }
 }
