@@ -19,6 +19,8 @@ struct AppDetailView: View {
 
       AppDetailInfoSection(result: result)
 
+      AppDetailReleaseNoteSection(result: result)
+
       AppDetailScreenShotSection(result: result)
     }
 
