@@ -57,8 +57,8 @@ struct SearchResultView: View {
   }
 
   private func screenShotView(of result: SearchResult) -> some View {
-    let width = UIScreen.main.bounds.width
-    let heigth = width / 3 * (21 / 9)
+    let screenShotRatio = CGFloat(10 / 16)
+
     return HStack {
       ForEach(result.screenshotUrls.prefix(3), id: \.self) {
         AsyncImage(url: $0) { image in
@@ -69,14 +69,10 @@ struct SearchResultView: View {
         } placeholder: {
           RoundedRectangle(cornerRadius: 8)
             .fill(.gray)
-            .frame(height: heigth)
+            .aspectRatio(screenShotRatio, contentMode: .fit)
         }
       }
     }
-    .frame(
-      maxWidth: width,
-      maxHeight: heigth
-    )
     .padding(.horizontal)
   }
 }
