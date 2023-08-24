@@ -17,6 +17,7 @@ struct ExpandableTextView: View {
   var body: some View {
     ZStack(alignment: .bottomTrailing) {
       Text(text)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .lineLimit(isExpanded ? nil : lineLimit)
         .checkIsTruncated(
           text: text,
@@ -88,6 +89,6 @@ private extension View {
 
 struct ExpandableTextView_Previews: PreviewProvider {
   static var previews: some View {
-    ExpandableTextView(text: String(repeating: "asdkajf kjsadfla sdk", count: 6))
+    ExpandableTextView(text: String(repeating: "asdkajf kjsadfla sdk", count: 144))
   }
 }
