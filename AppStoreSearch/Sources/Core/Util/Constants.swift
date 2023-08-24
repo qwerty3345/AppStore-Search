@@ -8,5 +8,5 @@
 import Foundation
 
 enum Constants {
-  static let screenShotRatio = CGFloat(10 / 16)
+  static let screenShotRatio = CGFloat(10.0 / 16.0)
 }
