@@ -8,7 +8,7 @@
 import Foundation
 
 typealias HTTPHeaders = [String: String]
-typealias Parameters = [String: Any?]
+typealias Parameters = [String: String]
 
 protocol EndPointType {
   var baseURL: URL { get }
@@ -30,6 +30,11 @@ extension EndPointType {
     var request = URLRequest(url: url)
     request.httpMethod = httpMethod.rawValue
     request.allHTTPHeaderFields = headers
+
+    if case let .requestParameters(parameters) = task {
+      let queryItems = parameters.map { URLQueryItem(name: $0, value: $1) }
+      request.url?.append(queryItems: queryItems)
+    }
 
     return request
   }
