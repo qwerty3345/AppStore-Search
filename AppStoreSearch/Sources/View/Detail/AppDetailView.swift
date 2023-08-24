@@ -29,6 +29,11 @@ struct AppDetailView: View {
         DetailScreenShotSection(result: result)
 
         DetailDescriptionSection(result: result)
+          .padding(.bottom)
+
+        Divider().padding(.horizontal)
+
+        DetailInformationSection(result: result)
       }
     }
   }
