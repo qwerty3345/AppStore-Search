@@ -28,6 +28,9 @@ struct SearchView: View {
     NavigationStack {
       showingList
         .navigationTitle("검색")
+        .navigationDestination(for: SearchResult.self) { result in
+          AppDetailView(result: result)
+        }
     }
     .searchable(
       text: $searchText,
@@ -56,7 +59,9 @@ struct SearchView: View {
     case .searching:
       recentSearchList
     case .showingResult:
-      searchResultList
+      SearchResultView(
+        searchResults: $searchResults
+      )
     }
   }
 
@@ -99,12 +104,6 @@ struct SearchView: View {
       .searchCompletion(suggestion)
     }
     .listStyle(.plain)
-  }
-
-  private var searchResultList: some View {
-    List(searchResults) { result in
-      Text(result.trackName)
-    }
   }
 
   // MARK: - Private Methods

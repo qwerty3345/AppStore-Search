@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SearchResult: Decodable {
+struct SearchResult: Decodable, Hashable {
   /// 앱 ID
   let trackId: Int
   /// 앱 이름
