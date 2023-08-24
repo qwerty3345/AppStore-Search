@@ -8,16 +8,15 @@
 import SwiftUI
 
 enum SearchState {
-  case recent
-  case result
+  case searching
+  case showingResult
 }
 
 struct SearchView: View {
   @State private var searchText = ""
-  @State private var searchState: SearchState = .recent
+  @State private var searchState: SearchState = .searching
 
   @State private var suggestions: [String] = []
-  @State private var isSuggestionTaskRunning = false
   let searchService = SearchService(router: NetworkRouter())
 
   let mockRecentSearch = ["최근검색1", "최근검색2"]
@@ -34,33 +33,28 @@ struct SearchView: View {
       prompt: "App Store"
     )
     .searchSuggestions {
-      suggestionView
+      if searchState == .searching {
+        suggestionView
+      }
     }
     .onSubmit(of: .search) {
       // TODO: 검색 시, Service에서 호출해서 받아오게 구현
-      searchState = .result
+      searchState = .showingResult
     }
-    .task(id: isSuggestionTaskRunning) {
-      if isSuggestionTaskRunning {
-        isSuggestionTaskRunning = false
-      }
-
-      do {
-        suggestions = try await searchService.suggestion(of: searchText)
-      } catch {}
+    .task(id: searchText) {
+      suggestions = (try? await searchService.suggestion(of: searchText)) ?? []
     }
     .onChange(of: searchText) { searchText in
-      isSuggestionTaskRunning = true
-      searchState = .recent
+      searchState = .searching
     }
   }
 
   @ViewBuilder
   private var showingList: some View {
     switch searchState {
-    case .recent:
+    case .searching:
       recentSearchList
-    case .result:
+    case .showingResult:
       searchResultList
     }
   }
@@ -107,7 +101,16 @@ struct SearchView: View {
   }
 
   private var searchResultList: some View {
-    Text("검색 결과 표출")
+    VStack {
+      Text("검색 결과 표출")
+      Text("검색 결과 표출")
+      Text("검색 결과 표출")
+      Text("검색 결과 표출")
+    }
+  }
+
+  private func search() {
+
   }
 }
 
