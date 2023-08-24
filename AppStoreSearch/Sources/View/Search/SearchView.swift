@@ -24,7 +24,6 @@ struct SearchView: View {
 
   let searchService = SearchService(router: NetworkRouter())
 
-
   var body: some View {
     NavigationStack {
       showingList

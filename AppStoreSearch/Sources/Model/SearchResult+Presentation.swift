@@ -32,4 +32,9 @@ extension SearchResult {
     guard let date = ISO8601DateFormatter().date(from: currentVersionReleaseDate) else { return "" }
     return date.formatPassedDay()
   }
+
+  var fileSizeByteText: String {
+    let byte = Double(fileSizeBytes) ?? 0
+    return byte.byteUnitText
+  }
 }
