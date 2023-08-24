@@ -14,24 +14,25 @@ struct AppDetailScreenShotSection: View {
     GeometryReader { geometry in
       let width = geometry.size.width * 0.6
 
-      ScrollView(.horizontal) {
-        LazyHStack {
-          ForEach(result.screenshotUrls, id: \.self) {
-            AsyncImage(url: $0) { image in
-              image
-                .resizable()
-                .scaledToFit()
-                .cornerRadius(8)
-                .frame(width: width)
-            } placeholder: {
-              RoundedRectangle(cornerRadius: 8)
-                .fill(.gray)
-                .frame(width: width)
-                .aspectRatio(Constants.screenShotRatio, contentMode: .fit)
-            }
+      // FIXME: 절반만 드러나는 형태로 Pagination 할 수 있게 수정 필요
+
+      TabView {
+        ForEach(result.screenshotUrls, id: \.self) {
+          AsyncImage(url: $0) { image in
+            image
+              .resizable()
+              .scaledToFit()
+              .cornerRadius(8)
+              .frame(width: width)
+          } placeholder: {
+            RoundedRectangle(cornerRadius: 8)
+              .fill(.gray)
+              .frame(width: width)
+              .aspectRatio(Constants.screenShotRatio, contentMode: .fit)
           }
         }
       }
+      .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
     }
   }
 }
