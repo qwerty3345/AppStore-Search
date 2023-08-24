@@ -17,10 +17,12 @@ struct SearchView: View {
   @State private var searchState: SearchState = .searching
 
   @State private var suggestions: [String] = []
-  let searchService = SearchService(router: NetworkRouter())
+  @State private var searchResults: [SearchResult] = []
 
   let mockRecentSearch = ["최근검색1", "최근검색2"]
-  let mockSearchResult = ["검색결과1", "검색결과2"]
+
+  let searchService = SearchService(router: NetworkRouter())
+
 
   var body: some View {
     NavigationStack {
@@ -38,8 +40,7 @@ struct SearchView: View {
       }
     }
     .onSubmit(of: .search) {
-      // TODO: 검색 시, Service에서 호출해서 받아오게 구현
-      searchState = .showingResult
+      search()
     }
     .task(id: searchText) {
       suggestions = (try? await searchService.suggestion(of: searchText)) ?? []
@@ -63,8 +64,8 @@ struct SearchView: View {
     Section {
       List(mockRecentSearch, id: \.self) { data in
         Button {
-          // TODO: 여기서 특정 아이템이 눌렸을 때, searchable이 trigger되게...
           searchText = data
+          search()
         } label: {
           Text(data)
             .foregroundColor(.blue)
@@ -101,16 +102,18 @@ struct SearchView: View {
   }
 
   private var searchResultList: some View {
-    VStack {
-      Text("검색 결과 표출")
-      Text("검색 결과 표출")
-      Text("검색 결과 표출")
-      Text("검색 결과 표출")
+    List(searchResults) { result in
+      Text(result.trackName)
     }
   }
 
-  private func search() {
+  // MARK: - Private Methods
 
+  private func search() {
+    Task {
+      searchResults = try await searchService.search(of: searchText)
+      searchState = .showingResult
+    }
   }
 }
 
