@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AppDetailHeaderSection: View {
+struct DetailHeaderSection: View {
   let result: SearchResult
 
   var body: some View {
@@ -22,11 +22,11 @@ struct AppDetailHeaderSection: View {
       VStack {
         VStack(alignment: .leading) {
           Text(result.trackName)
-            .font(.title)
+            .font(.title2)
             .fontWeight(.bold)
           Text(result.artistName)
             .foregroundColor(.gray)
-            .font(.body)
+            .font(.callout)
             .fontWeight(.medium)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -61,8 +61,8 @@ struct AppDetailHeaderSection: View {
   }
 }
 
-struct AppDetailHeaderSection_Previews: PreviewProvider {
+struct DetailHeaderSection_Previews: PreviewProvider {
   static var previews: some View {
-    AppDetailHeaderSection(result: .mock)
+    DetailHeaderSection(result: .mock)
   }
 }

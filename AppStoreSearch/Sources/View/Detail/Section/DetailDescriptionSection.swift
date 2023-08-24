@@ -1,5 +1,5 @@
 //
-//  AppDetailDescriptionSection.swift
+//  DetailDescriptionSection.swift
 //  AppStoreSearch
 //
 //  Created by Mason Kim on 2023/08/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AppDetailDescriptionSection: View {
+struct DetailDescriptionSection: View {
   let result: SearchResult
 
   var body: some View {
@@ -41,8 +41,8 @@ struct AppDetailDescriptionSection: View {
   }
 }
 
-struct AppDetailDescriptionSection_Previews: PreviewProvider {
+struct DetailDescriptionSection_Previews: PreviewProvider {
   static var previews: some View {
-    AppDetailDescriptionSection(result: .mock)
+    DetailDescriptionSection(result: .mock)
   }
 }

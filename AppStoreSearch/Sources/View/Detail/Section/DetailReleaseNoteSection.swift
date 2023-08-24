@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-struct AppDetailReleaseNoteSection: View {
+struct DetailReleaseNoteSection: View {
   let result: SearchResult
 
   var body: some View {
     VStack(spacing: 12) {
       HStack {
         Text("새로운 기능")
-          .font(.title)
+          .font(.title2)
           .fontWeight(.bold)
         Spacer()
         Button("버전 기록") {
@@ -35,8 +35,8 @@ struct AppDetailReleaseNoteSection: View {
   }
 }
 
-struct AppDetailReleaseNoteSection_Previews: PreviewProvider {
+struct DetailReleaseNoteSection_Previews: PreviewProvider {
   static var previews: some View {
-    AppDetailReleaseNoteSection(result: SearchResponse.mock.results[6])
+    DetailReleaseNoteSection(result: SearchResponse.mock.results[6])
   }
 }

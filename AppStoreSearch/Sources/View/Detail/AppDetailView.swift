@@ -11,19 +11,26 @@ struct AppDetailView: View {
   let result: SearchResult
 
   var body: some View {
-    VStack {
-      AppDetailHeaderSection(result: result)
-        .padding(.bottom)
+    ScrollView {
+      VStack {
+        DetailHeaderSection(result: result)
+          .padding(.bottom)
 
-      Divider().padding(.horizontal)
+        Divider().padding(.horizontal)
 
-      AppDetailInfoSection(result: result)
+        DetailHorizontalInfoSection(result: result)
 
-      AppDetailReleaseNoteSection(result: result)
+        Divider().padding(.horizontal)
 
-      AppDetailScreenShotSection(result: result)
+        DetailReleaseNoteSection(result: result)
+
+        Divider().padding(.horizontal)
+
+        DetailScreenShotSection(result: result)
+
+        DetailDescriptionSection(result: result)
+      }
     }
-
   }
 }
 

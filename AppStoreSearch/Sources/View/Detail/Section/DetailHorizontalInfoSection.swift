@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AppDetailInfoSection: View {
+struct DetailHorizontalInfoSection: View {
   let result: SearchResult
 
   var divider: some View {
@@ -108,8 +108,8 @@ struct InfoView<Content: View>: View {
 }
 
 
-struct AppDetailInfoSection_Previews: PreviewProvider {
+struct DetailInfoSection_Previews: PreviewProvider {
   static var previews: some View {
-    AppDetailInfoSection(result: .mock)
+    DetailHorizontalInfoSection(result: .mock)
   }
 }
