@@ -15,12 +15,13 @@ struct AppDetailView: View {
       AppDetailHeaderSection(result: result)
         .padding(.bottom)
 
-      Divider()
+      Divider().padding(.horizontal)
 
       AppDetailInfoSection(result: result)
 
-      Divider()
+      AppDetailScreenShotSection(result: result)
     }
+
   }
 }
 
