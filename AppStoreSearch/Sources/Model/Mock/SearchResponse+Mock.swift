@@ -9,10 +9,13 @@ import Foundation
 
 #if DEBUG
 extension SearchResponse {
-  static let mock: SearchResponse = {
+  static let mockRawData: Data! = {
     let location = Bundle.main.url(forResource: "search_response_mock", withExtension: "json")!
-    let data = try! Data(contentsOf: location)
-    return try! JSONDecoder().decode(SearchResponse.self, from: data)
+    return try! Data(contentsOf: location)
+  }()
+
+  static let mock: SearchResponse = {
+    return try! JSONDecoder().decode(SearchResponse.self, from: Self.mockRawData)
   }()
 }
 
