@@ -21,8 +21,15 @@ struct SearchResult: Decodable, Hashable {
   /// 지원되는 기기들
   let supportedDevices: [String]
 
-  /// 릴리즈 노트
+  /// 초기 출시일
+  let releaseDate: String
+  /// 최근 릴리즈 노트
   let releaseNotes: String
+  /// 최근 업데이트일
+  let currentVersionReleaseDate: String
+  /// 최신 버전
+  let version: String
+
   /// 개발자 이름
   let artistName: String
   /// 앱 장르들

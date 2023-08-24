@@ -17,6 +17,6 @@ extension SearchResponse {
 }
 
 extension SearchResult {
-  static let mock = SearchResponse.mock.results.first!
+  static let mock = SearchResponse.mock.results.last!
 }
 #endif
