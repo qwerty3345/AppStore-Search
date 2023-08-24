@@ -24,7 +24,7 @@ struct SearchResult: Decodable, Hashable {
   /// 초기 출시일
   let releaseDate: String
   /// 최근 릴리즈 노트
-  let releaseNotes: String
+  let releaseNotes: String?
   /// 최근 업데이트일
   let currentVersionReleaseDate: String
   /// 최신 버전
@@ -50,6 +50,9 @@ struct SearchResult: Decodable, Hashable {
   let artworkUrl100: URL
   /// 512x512 로고 URL
   let artworkUrl512: URL
+
+  /// 파일 사이즈 바이트
+  let fileSizeBytes: String
 }
 
 // MARK: - Identifiable

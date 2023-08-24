@@ -13,7 +13,7 @@ final class NetworkRouterTests: XCTestCase {
   var sut: NetworkRouter!
 
   override func setUpWithError() throws {
-    sut = NetworkRouter()
+    sut = NetworkRouter(session: MockURLSession())
   }
 
   override func tearDownWithError() throws {

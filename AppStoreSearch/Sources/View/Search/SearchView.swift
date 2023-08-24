@@ -15,11 +15,12 @@ enum SearchState {
 struct SearchView: View {
   @State private var searchText = ""
   @State private var searchState: SearchState = .searching
-
-  @State private var suggestions: [String] = []
   @State private var searchResults: [SearchResult] = []
 
-  let mockRecentSearch = ["최근검색1", "최근검색2"]
+  @State private var suggestions: [String] = []
+  @State private var selectedSuggestion: String?
+
+  let mockRecentSearch = ["a", "b"]
 
   let searchService = SearchService(router: NetworkRouter())
 
@@ -43,13 +44,19 @@ struct SearchView: View {
       }
     }
     .onSubmit(of: .search) {
-      search()
+      search(of: searchText)
     }
     .task(id: searchText) {
       suggestions = (try? await searchService.suggestion(of: searchText)) ?? []
     }
     .onChange(of: searchText) { searchText in
       searchState = .searching
+    }
+    .onChange(of: selectedSuggestion) { selectedSuggestion in
+      if let selectedSuggestion, !selectedSuggestion.isEmpty {
+        searchText = selectedSuggestion
+        search(of: selectedSuggestion)
+      }
     }
   }
 
@@ -70,7 +77,7 @@ struct SearchView: View {
       List(mockRecentSearch, id: \.self) { data in
         Button {
           searchText = data
-          search()
+          search(of: searchText)
         } label: {
           Text(data)
             .foregroundColor(.blue)
@@ -101,16 +108,18 @@ struct SearchView: View {
           .padding(.trailing, 8)
         Text(suggestion)
       }
-      .searchCompletion(suggestion)
+      .onTapGesture {
+        selectedSuggestion = suggestion
+      }
     }
     .listStyle(.plain)
   }
 
   // MARK: - Private Methods
 
-  private func search() {
+  private func search(of query: String) {
     Task {
-      searchResults = try await searchService.search(of: searchText)
+      searchResults = try await searchService.search(of: query)
       searchState = .showingResult
     }
   }
