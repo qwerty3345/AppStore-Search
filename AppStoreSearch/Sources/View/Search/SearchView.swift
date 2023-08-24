@@ -15,11 +15,12 @@ enum SearchState {
 struct SearchView: View {
   @State private var searchText = ""
   @State private var searchState: SearchState = .searching
-
-  @State private var suggestions: [String] = []
   @State private var searchResults: [SearchResult] = []
 
-  let mockRecentSearch = ["최근검색1", "최근검색2"]
+  @State private var suggestions: [String] = []
+  @State private var selectedSuggestion: String?
+
+  let mockRecentSearch = ["a", "b"]
 
   let searchService = SearchService(router: NetworkRouter())
 
@@ -50,6 +51,11 @@ struct SearchView: View {
     }
     .onChange(of: searchText) { searchText in
       searchState = .searching
+    }
+    .onChange(of: selectedSuggestion) { selectedSuggestion in
+      if let selectedSuggestion, !selectedSuggestion.isEmpty {
+        search()
+      }
     }
   }
 
@@ -101,7 +107,10 @@ struct SearchView: View {
           .padding(.trailing, 8)
         Text(suggestion)
       }
-      .searchCompletion(suggestion)
+      .onTapGesture {
+        searchText = suggestion
+        selectedSuggestion = suggestion
+      }
     }
     .listStyle(.plain)
   }
@@ -109,6 +118,7 @@ struct SearchView: View {
   // MARK: - Private Methods
 
   private func search() {
+    print("search Start!")
     Task {
       searchResults = try await searchService.search(of: searchText)
       searchState = .showingResult
