@@ -26,8 +26,6 @@ final class NetworkRouterTests: XCTestCase {
       type: SuggestionResponse.self
     )
 
-    print(suggestionResponse)
-
     XCTAssertFalse(suggestionResponse.results.isEmpty)
   }
 
