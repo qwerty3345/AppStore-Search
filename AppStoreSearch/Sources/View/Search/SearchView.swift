@@ -22,7 +22,7 @@ struct SearchView: View {
 
   let mockRecentSearch = ["a", "b"]
 
-  let searchService = SearchService(router: NetworkRouter())
+  let searchService: SearchServiceProtocol
 
   var body: some View {
     NavigationStack {
@@ -126,7 +126,11 @@ struct SearchView: View {
 
 struct SearchView_Previews: PreviewProvider {
   static var previews: some View {
-    SearchView()
+    SearchView(
+      searchService: SearchService(
+        router: NetworkRouter(session: MockURLSession())
+      )
+    )
   }
 }
 

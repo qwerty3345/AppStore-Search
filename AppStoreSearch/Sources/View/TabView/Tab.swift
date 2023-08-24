@@ -41,7 +41,12 @@ enum Tab: CaseIterable {
     case .game: placeholderView
     case .app: placeholderView
     case .arcade: placeholderView
-    case .search: SearchView()
+    case .search: SearchView(
+      // TODO: Service, Router를 주입하는 Container 구현 _ 종속성 분리
+      searchService: SearchService(
+        router: NetworkRouter()
+      )
+    )
     }
   }
 

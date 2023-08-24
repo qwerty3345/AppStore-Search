@@ -7,7 +7,12 @@
 
 import Foundation
 
-final class SearchService {
+protocol SearchServiceProtocol {
+  func suggestion(of query: String) async throws -> [String]
+  func search(of query: String) async throws -> [SearchResult]
+}
+
+struct SearchService: SearchServiceProtocol {
 
   // MARK: - Properties
 
