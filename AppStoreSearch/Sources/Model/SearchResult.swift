@@ -45,6 +45,8 @@ struct SearchResult: Decodable, Hashable {
   let artworkUrl512: URL
 }
 
+// MARK: - Identifiable
+
 extension SearchResult: Identifiable {
   var id: Int { trackId }
 }
