@@ -30,4 +30,13 @@ final class SearchService {
     let suggestions = suggestionResponse.results.map { $0.trackName }
     return suggestions
   }
+
+  func search(of query: String) async throws -> [SearchResult] {
+    let searchResponse = try await router.request(
+      with: SearchEndpoint.searchApp(query: query),
+      type: SearchResponse.self
+    )
+
+    return searchResponse.results
+  }
 }
