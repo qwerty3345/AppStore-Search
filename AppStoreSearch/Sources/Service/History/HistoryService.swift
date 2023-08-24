@@ -8,7 +8,7 @@
 import Foundation
 
 protocol HistoryServiceProtocol {
-  func fetchHistories() -> [String]
+  func fetchHistories() async -> [String]
   func save(history: String)
 }
 
@@ -20,11 +20,12 @@ final class HistoryService: HistoryServiceProtocol {
   private(set) var histories: [String]
 
   private static let historyKey: String = "History"
-  private let maxCount = 3
+  private let maxCount = 20
 
   // MARK: - Public Methods
 
-  func fetchHistories() -> [String] {
+  @MainActor
+  func fetchHistories() async -> [String] {
     return histories
   }
 

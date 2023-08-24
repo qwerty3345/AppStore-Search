@@ -20,6 +20,8 @@ struct SearchView: View {
   @State private var suggestions: [String] = []
   @State private var selectedSuggestion: String?
 
+  @State private var currentSearchTask: Task<(), Error>?
+
   @State private var histories: [String] = []
 
   let mockRecentSearch = ["a", "b"]
@@ -61,7 +63,9 @@ struct SearchView: View {
       }
     }
     .onAppear {
-      histories = historyService.fetchHistories()
+      Task {
+        histories = await historyService.fetchHistories()
+      }
     }
   }
 
@@ -123,12 +127,14 @@ struct SearchView: View {
   // MARK: - Private Methods
 
   private func search(of query: String) {
-    Task {
+    currentSearchTask?.cancel()
+
+    currentSearchTask = Task {
       searchResults = try await searchService.search(of: query)
       searchState = .showingResult
 
       historyService.save(history: query)
-      histories = historyService.fetchHistories()
+      histories = await historyService.fetchHistories()
     }
   }
 }
