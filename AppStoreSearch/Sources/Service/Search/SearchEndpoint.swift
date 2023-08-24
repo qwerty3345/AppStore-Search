@@ -7,12 +7,16 @@
 
 import Foundation
 
-enum SearchEndpoint: EndPointType {
+enum SearchEndpoint {
   /// 검색어 제안 (자동완성)
   case suggestion(query: String)
   /// 앱 검색
   case searchApp(query: String)
+}
 
+// MARK: - EndPointType
+
+extension SearchEndpoint: EndPointType {
   var baseURL: URL {
     return URL(string: "https://itunes.apple.com")!
   }

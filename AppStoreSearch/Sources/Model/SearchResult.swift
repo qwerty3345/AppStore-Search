@@ -7,7 +7,9 @@
 
 import Foundation
 
-struct SearchResult: Decodable {
+struct SearchResult: Decodable, Hashable {
+  /// 앱 ID
+  let trackId: Int
   /// 앱 이름
   let trackName: String
   /// 앱 상세 설명
@@ -41,4 +43,10 @@ struct SearchResult: Decodable {
   let artworkUrl100: URL
   /// 512x512 로고 URL
   let artworkUrl512: URL
+}
+
+// MARK: - Identifiable
+
+extension SearchResult: Identifiable {
+  var id: Int { trackId }
 }

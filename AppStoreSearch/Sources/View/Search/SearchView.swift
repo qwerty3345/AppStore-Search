@@ -8,25 +8,29 @@
 import SwiftUI
 
 enum SearchState {
-  case recent
-  case result
+  case searching
+  case showingResult
 }
 
 struct SearchView: View {
   @State private var searchText = ""
-  @State private var searchState: SearchState = .recent
+  @State private var searchState: SearchState = .searching
 
   @State private var suggestions: [String] = []
-  @State private var isSuggestionTaskRunning = false
-  let searchService = SearchService(router: NetworkRouter())
+  @State private var searchResults: [SearchResult] = []
 
   let mockRecentSearch = ["최근검색1", "최근검색2"]
-  let mockSearchResult = ["검색결과1", "검색결과2"]
+
+  let searchService = SearchService(router: NetworkRouter())
+
 
   var body: some View {
     NavigationStack {
       showingList
         .navigationTitle("검색")
+        .navigationDestination(for: SearchResult.self) { result in
+          AppDetailView(result: result)
+        }
     }
     .searchable(
       text: $searchText,
@@ -34,34 +38,30 @@ struct SearchView: View {
       prompt: "App Store"
     )
     .searchSuggestions {
-      suggestionView
+      if searchState == .searching {
+        suggestionView
+      }
     }
     .onSubmit(of: .search) {
-      // TODO: 검색 시, Service에서 호출해서 받아오게 구현
-      searchState = .result
+      search()
     }
-    .task(id: isSuggestionTaskRunning) {
-      if isSuggestionTaskRunning {
-        isSuggestionTaskRunning = false
-      }
-
-      do {
-        suggestions = try await searchService.suggestion(of: searchText)
-      } catch {}
+    .task(id: searchText) {
+      suggestions = (try? await searchService.suggestion(of: searchText)) ?? []
     }
     .onChange(of: searchText) { searchText in
-      isSuggestionTaskRunning = true
-      searchState = .recent
+      searchState = .searching
     }
   }
 
   @ViewBuilder
   private var showingList: some View {
     switch searchState {
-    case .recent:
+    case .searching:
       recentSearchList
-    case .result:
-      searchResultList
+    case .showingResult:
+      SearchResultView(
+        searchResults: $searchResults
+      )
     }
   }
 
@@ -69,8 +69,8 @@ struct SearchView: View {
     Section {
       List(mockRecentSearch, id: \.self) { data in
         Button {
-          // TODO: 여기서 특정 아이템이 눌렸을 때, searchable이 trigger되게...
           searchText = data
+          search()
         } label: {
           Text(data)
             .foregroundColor(.blue)
@@ -106,8 +106,13 @@ struct SearchView: View {
     .listStyle(.plain)
   }
 
-  private var searchResultList: some View {
-    Text("검색 결과 표출")
+  // MARK: - Private Methods
+
+  private func search() {
+    Task {
+      searchResults = try await searchService.search(of: searchText)
+      searchState = .showingResult
+    }
   }
 }
 
