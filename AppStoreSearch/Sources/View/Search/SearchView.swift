@@ -17,8 +17,7 @@ struct SearchView: View {
   @State private var searchState: SearchState = .recent
 
   @State private var suggestions: [String] = []
-  @State private var currentSuggestionTask: Task<Void, Error>? = nil
-
+  @State private var isSuggestionTaskRunning = false
   let searchService = SearchService(router: NetworkRouter())
 
   let mockRecentSearch = ["최근검색1", "최근검색2"]
@@ -41,13 +40,17 @@ struct SearchView: View {
       // TODO: 검색 시, Service에서 호출해서 받아오게 구현
       searchState = .result
     }
-    .onChange(of: searchText) { searchText in
-      currentSuggestionTask?.cancel()
-
-      currentSuggestionTask = Task {
-        suggestions = try await searchService.suggestion(of: searchText)
+    .task(id: isSuggestionTaskRunning) {
+      if isSuggestionTaskRunning {
+        isSuggestionTaskRunning = false
       }
 
+      do {
+        suggestions = try await searchService.suggestion(of: searchText)
+      } catch {}
+    }
+    .onChange(of: searchText) { searchText in
+      isSuggestionTaskRunning = true
       searchState = .recent
     }
   }
