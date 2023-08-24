@@ -44,7 +44,7 @@ struct SearchView: View {
       }
     }
     .onSubmit(of: .search) {
-      search()
+      search(of: searchText)
     }
     .task(id: searchText) {
       suggestions = (try? await searchService.suggestion(of: searchText)) ?? []
@@ -54,7 +54,8 @@ struct SearchView: View {
     }
     .onChange(of: selectedSuggestion) { selectedSuggestion in
       if let selectedSuggestion, !selectedSuggestion.isEmpty {
-        search()
+        searchText = selectedSuggestion
+        search(of: selectedSuggestion)
       }
     }
   }
@@ -76,7 +77,7 @@ struct SearchView: View {
       List(mockRecentSearch, id: \.self) { data in
         Button {
           searchText = data
-          search()
+          search(of: searchText)
         } label: {
           Text(data)
             .foregroundColor(.blue)
@@ -108,7 +109,6 @@ struct SearchView: View {
         Text(suggestion)
       }
       .onTapGesture {
-        searchText = suggestion
         selectedSuggestion = suggestion
       }
     }
@@ -117,10 +117,9 @@ struct SearchView: View {
 
   // MARK: - Private Methods
 
-  private func search() {
-    print("search Start!")
+  private func search(of query: String) {
     Task {
-      searchResults = try await searchService.search(of: searchText)
+      searchResults = try await searchService.search(of: query)
       searchState = .showingResult
     }
   }
