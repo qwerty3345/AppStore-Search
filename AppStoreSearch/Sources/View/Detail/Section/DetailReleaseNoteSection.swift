@@ -29,7 +29,9 @@ struct DetailReleaseNoteSection: View {
       }
       .foregroundColor(.gray)
 
-      ExpandableTextView(text: result.releaseNotes)
+      if let releaseNotes = result.releaseNotes {
+        ExpandableTextView(text: releaseNotes)
+      }
     }
     .padding(.horizontal)
   }
