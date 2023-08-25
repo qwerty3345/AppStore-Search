@@ -66,14 +66,13 @@ struct Carousel<Content: View, T: Hashable>: View {
             let progress = -offset / width
             let roundedIndex = progress.rounded()
 
-            let targetIndex = currentIndex + Int(roundedIndex)
-            var targetIndexInRange = min(
+            var targetIndex = min(
               currentIndex + Int(roundedIndex),
               items.count - 1
             )
-            targetIndexInRange = max(targetIndexInRange, 0)
+            targetIndex = max(targetIndex, 0)
 
-            currentIndex = targetIndexInRange
+            currentIndex = targetIndex
           }
       )
     }

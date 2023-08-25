@@ -40,11 +40,14 @@ struct AppDetailView: View {
         }
       }
     }
+    .navigationBarTitle("", displayMode: .inline)
   }
 }
 
 struct AppDetailView_Previews: PreviewProvider {
   static var previews: some View {
-    AppDetailView(result: .mock)
+    NavigationStack {
+      AppDetailView(result: .mock)
+    }
   }
 }

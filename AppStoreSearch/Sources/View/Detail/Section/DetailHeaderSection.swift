@@ -16,8 +16,8 @@ struct DetailHeaderSection: View {
         image
           .resizable()
           .cornerRadius(16)
-          .frame(width: 110, height: 110)
       }
+      .frame(width: 110, height: 110)
 
       VStack {
         VStack(alignment: .leading) {
