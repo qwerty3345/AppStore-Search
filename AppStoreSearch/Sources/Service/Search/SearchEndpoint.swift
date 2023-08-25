@@ -8,8 +8,6 @@
 import Foundation
 
 enum SearchEndpoint {
-  /// 검색어 제안 (자동완성)
-  case suggestion(query: String)
   /// 앱 검색
   case searchApp(query: String)
 }
@@ -31,14 +29,6 @@ extension SearchEndpoint: EndPointType {
 
   var task: HTTPTask {
     switch self {
-    case let .suggestion(query: query):
-      let parameters: Parameters = [
-        "term": query,
-        "media": "software",
-        "country": "KR"
-      ]
-      return .requestParameters(parameters)
-
     case let .searchApp(query: query):
       let parameters: Parameters = [
         "term": query,

@@ -50,11 +50,12 @@ struct SearchView: View {
     .onSubmit(of: .search) {
       search(of: searchText)
     }
-    .task(id: searchText) {
-      suggestions = (try? await searchService.suggestion(of: searchText)) ?? []
-    }
     .onChange(of: searchText) { searchText in
       searchState = .searching
+
+      suggestions = histories.filter {
+        $0.contains(searchText)
+      }
     }
     .onChange(of: selectedSuggestion) { selectedSuggestion in
       if let selectedSuggestion, !selectedSuggestion.isEmpty {
