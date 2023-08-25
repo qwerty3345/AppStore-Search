@@ -34,8 +34,6 @@ struct SearchResult: Decodable, Hashable {
   let artistName: String
   /// 앱 장르들
   let genres: [String]
-  /// 가격
-  let price: Double
 
   /// 사용 연령
   let contentAdvisoryRating: String
@@ -45,9 +43,9 @@ struct SearchResult: Decodable, Hashable {
   let userRatingCount: Int
 
   /// 60x60 로고 URL
-  let artworkUrl60: URL
+  let artworkUrl60: URL?
   /// 100x100 로고 URL
-  let artworkUrl100: URL
+  let artworkUrl100: URL?
   /// 512x512 로고 URL
   let artworkUrl512: URL
 

@@ -20,9 +20,14 @@ struct SearchView: View {
   @State private var suggestions: [String] = []
   @State private var selectedSuggestion: String?
 
+  @State private var currentSearchTask: Task<(), Error>?
+
+  @State private var histories: [String] = []
+
   let mockRecentSearch = ["a", "b"]
 
-  let searchService = SearchService(router: NetworkRouter())
+  let searchService: SearchServiceProtocol
+  let historyService: HistoryServiceProtocol
 
   var body: some View {
     NavigationStack {
@@ -57,6 +62,11 @@ struct SearchView: View {
         search(of: selectedSuggestion)
       }
     }
+    .onAppear {
+      Task {
+        histories = historyService.fetchHistories()
+      }
+    }
   }
 
   @ViewBuilder
@@ -73,7 +83,7 @@ struct SearchView: View {
 
   private var recentSearchList: some View {
     Section {
-      List(mockRecentSearch, id: \.self) { data in
+      List(histories, id: \.self) { data in
         Button {
           searchText = data
           search(of: searchText)
@@ -117,16 +127,26 @@ struct SearchView: View {
   // MARK: - Private Methods
 
   private func search(of query: String) {
-    Task {
+    currentSearchTask?.cancel()
+
+    currentSearchTask = Task {
       searchResults = try await searchService.search(of: query)
       searchState = .showingResult
+
+      historyService.save(history: query)
+      histories = historyService.fetchHistories()
     }
   }
 }
 
 struct SearchView_Previews: PreviewProvider {
   static var previews: some View {
-    SearchView()
+    SearchView(
+      searchService: SearchService(
+        router: NetworkRouter(session: MockURLSession())
+      ),
+      historyService: HistoryService()
+    )
   }
 }
 
