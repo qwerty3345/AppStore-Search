@@ -8,7 +8,6 @@
 import Foundation
 
 protocol SearchServiceProtocol {
-  func suggestion(of query: String) async throws -> [String]
   func search(of query: String) async throws -> [SearchResult]
 }
 
@@ -25,16 +24,6 @@ struct SearchService: SearchServiceProtocol {
   }
 
   // MARK: - Public Methods
-
-  func suggestion(of query: String) async throws -> [String] {
-    let suggestionResponse = try await router.request(
-      with: SearchEndpoint.suggestion(query: query),
-      type: SuggestionResponse.self
-    )
-
-    let suggestions = suggestionResponse.results.map { $0.trackName }
-    return suggestions
-  }
 
   func search(of query: String) async throws -> [SearchResult] {
     let searchResponse = try await router.request(
