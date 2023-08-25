@@ -13,13 +13,15 @@ struct SearchResultView: View {
   var body: some View {
     // TODO: 검색 결과가 없을 때 나타내기
     List(searchResults) { result in
-      NavigationLink(value: result) {
-        VStack {
-          header(of: result)
-          screenShotView(of: result)
-        }
+      VStack {
+        header(of: result)
+        screenShotView(of: result)
       }
-      .buttonStyle(PlainButtonStyle())
+      .overlay( // 네비게이션 링크의 ">" 를 지우기 위해 overlay로 처리
+        NavigationLink(value: result, label: {})
+          .opacity(0.0)
+      )
+
       .listRowSeparator(.hidden)
     }
     .listStyle(.plain)
@@ -55,25 +57,33 @@ struct SearchResultView: View {
           .background(.gray.opacity(0.2))
           .cornerRadius(16)
       }
-
     }
   }
 
   private func screenShotView(of result: SearchResult) -> some View {
-    HStack {
-      ForEach(result.screenshotUrls.prefix(3), id: \.self) {
-        RemoteImage(url: $0) { image in
-          image
-            .resizable()
-            .cornerRadius(8)
-        } placeHolderView: {
-          RoundedRectangle(cornerRadius: 8)
-            .fill(.gray)
+    return ScrollView(.horizontal, showsIndicators: false) {
+      HStack(spacing: 8) {
+        let shortSideSize = UIScreen.main.bounds.width / 3 - 16
+        let longSideSize = shortSideSize * result.screenShotMode.ratio
+
+        let width = result.screenShotMode == .longWidth ? longSideSize : shortSideSize
+        let height = result.screenShotMode == .longHeight ? longSideSize : shortSideSize
+
+        ForEach(result.screenshotUrls.prefix(3), id: \.self) {
+          RemoteImage(url: $0) { image in
+            image
+              .resizable()
+              .cornerRadius(8)
+              .aspectRatio(contentMode: .fit)
+          } placeHolderView: {
+            RoundedRectangle(cornerRadius: 8)
+              .fill(.gray)
+          }
+          .frame(width: width, height: height)
         }
-        .aspectRatio(Constants.screenShotRatio, contentMode: .fit)
       }
     }
-    .padding(.horizontal)
+    .scrollDisabled(result.screenShotMode == .longHeight)
   }
 }
 

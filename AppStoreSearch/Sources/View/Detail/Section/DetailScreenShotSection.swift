@@ -32,7 +32,10 @@ struct DetailScreenShotSection: View {
                 .cornerRadius(8)
             }
             .frame(width: width)
-            .aspectRatio(Constants.screenShotRatio, contentMode: .fit)
+            .aspectRatio(
+              result.screenShotMode.ratio,
+              contentMode: .fit
+            )
           }
         }
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
