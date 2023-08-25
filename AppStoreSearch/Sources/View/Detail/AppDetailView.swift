@@ -23,7 +23,9 @@ struct AppDetailView: View {
 
           Divider().padding(.horizontal)
 
-          DetailHorizontalInfoSection(result: result)
+          DetailHorizontalInfoSection(
+            model: .init(from: result)
+          )
           
           Divider().padding(.horizontal)
 
