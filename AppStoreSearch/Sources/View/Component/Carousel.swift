@@ -27,7 +27,7 @@ struct Carousel<Content: View, T: Hashable>: View {
   init(
     items: [T],
     index: Binding<Int>,
-    spacing: CGFloat = 15,
+    spacing: CGFloat = 10,
     trailingSpace: CGFloat = 100,
     content: @escaping (T) -> Content
   ) {

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DetailScreenShotSection: View {
   let result: SearchResult
+  @State private var index = 0
 
   var body: some View {
     VStack {
@@ -18,28 +19,27 @@ struct DetailScreenShotSection: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal)
       
-      GeometryReader { geometry in
-        let width = geometry.size.width * 0.6
-        
-        // FIXME: 절반만 드러나는 형태로 Pagination 할 수 있게 수정 필요
-        
-        TabView {
-          ForEach(result.screenshotUrls, id: \.self) {
-            RemoteImage(url: $0) { image in
-              image
-                .resizable()
-                .scaledToFit()
-                .cornerRadius(8)
-            }
-            .frame(width: width)
-            .aspectRatio(
-              result.screenShotMode.ratio,
-              contentMode: .fit
-            )
-          }
+      let isLongWidth = result.screenShotMode == .longWidth
+      let screenWidth = UIScreen.main.bounds.width
+      let width = isLongWidth ? screenWidth * 0.9 : screenWidth * 0.6
+      let height = width / result.screenShotMode.ratio
+
+      Carousel(
+        items: result.screenshotUrls,
+        index: $index,
+        spacing: 10,
+        trailingSpace: isLongWidth ? 40 : 140
+      ) {
+        RemoteImage(url: $0) { image in
+          image
+            .resizable()
+            .scaledToFit()
+            .cornerRadius(8)
         }
-        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+        .frame(width: width, height: height)
       }
+      .frame(height: height)
+      .padding(.bottom)
     }
   }
 }
@@ -47,5 +47,6 @@ struct DetailScreenShotSection: View {
 struct DetailReleaseSection_Previews: PreviewProvider {
   static var previews: some View {
     DetailScreenShotSection(result: .mock)
+      .previewLayout(.sizeThatFits)
   }
 }
