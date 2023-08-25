@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DetailHeaderSection: View {
   let result: SearchResult
+  @Binding var shareItem: ShareItem?
 
   var body: some View {
     HStack {
@@ -16,8 +17,8 @@ struct DetailHeaderSection: View {
         image
           .resizable()
           .cornerRadius(16)
-          .frame(width: 110, height: 110)
       }
+      .frame(width: 110, height: 110)
 
       VStack {
         VStack(alignment: .leading) {
@@ -46,7 +47,11 @@ struct DetailHeaderSection: View {
           Spacer()
 
           Button {
-            // 공유 액션
+            shareItem = ShareItem(
+              id: result.id,
+              trackName: result.trackName,
+              trackViewUrl: result.trackViewUrl
+            )
           } label: {
             Image(systemName: "square.and.arrow.up")
               .resizable()
@@ -63,6 +68,9 @@ struct DetailHeaderSection: View {
 
 struct DetailHeaderSection_Previews: PreviewProvider {
   static var previews: some View {
-    DetailHeaderSection(result: .mock)
+    DetailHeaderSection(
+      result: .mock,
+      shareItem: .constant(nil)
+    )
   }
 }

@@ -34,6 +34,8 @@ struct SearchResult: Decodable, Hashable {
   let artistName: String
   /// 앱 장르들
   let genres: [String]
+  /// 앱 링크
+  let trackViewUrl: String?
 
   /// 사용 연령
   let contentAdvisoryRating: String
