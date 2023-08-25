@@ -21,7 +21,6 @@ struct SearchResultView: View {
         NavigationLink(value: result, label: {})
           .opacity(0.0)
       )
-
       .listRowSeparator(.hidden)
     }
     .listStyle(.plain)
@@ -63,11 +62,15 @@ struct SearchResultView: View {
   private func screenShotView(of result: SearchResult) -> some View {
     return ScrollView(.horizontal, showsIndicators: false) {
       HStack(spacing: 8) {
-        let shortSideSize = UIScreen.main.bounds.width / 3 - 16
-        let longSideSize = shortSideSize * result.screenShotMode.ratio
+        let isLongWidth = result.screenShotMode == .longWidth
 
-        let width = result.screenShotMode == .longWidth ? longSideSize : shortSideSize
-        let height = result.screenShotMode == .longHeight ? longSideSize : shortSideSize
+        let shortSideSize = UIScreen.main.bounds.width / 3 - 16
+        let longSideSize = isLongWidth ?
+        shortSideSize * result.screenShotMode.ratio :
+        shortSideSize / result.screenShotMode.ratio
+
+        let width = isLongWidth ? longSideSize : shortSideSize
+        let height = isLongWidth ? shortSideSize : longSideSize
 
         ForEach(result.screenshotUrls.prefix(3), id: \.self) {
           RemoteImage(url: $0) { image in

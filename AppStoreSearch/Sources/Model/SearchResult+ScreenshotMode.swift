@@ -38,7 +38,7 @@ enum ScreenShotMode {
   var ratio: CGFloat {
     switch self {
     case .longHeight:
-      return 696.0 / 392.0
+      return 392.0 / 696.0
     case .longWidth:
       return 406.0 / 228.0
     case .none:
