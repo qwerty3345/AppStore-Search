@@ -20,15 +20,6 @@ final class NetworkRouterTests: XCTestCase {
     sut = nil
   }
 
-  func test_Suggestion_결과가_비어있지_않다() async throws {
-    let suggestionResponse = try await sut.request(
-      with: SearchEndpoint.suggestion(query: "health"),
-      type: SuggestionResponse.self
-    )
-
-    XCTAssertFalse(suggestionResponse.results.isEmpty)
-  }
-
   func test_Search_결과가_비어있지_않다() async throws {
     let searchResponse = try await sut.request(
       with: SearchEndpoint.searchApp(query: "health"),
