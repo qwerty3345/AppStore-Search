@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Core
 
 protocol SearchServiceProtocol {
   func search(of query: String) async throws -> [SearchResult]

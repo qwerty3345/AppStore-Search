@@ -7,14 +7,14 @@
 
 import Foundation
 
-enum NetworkError: LocalizedError {
+public enum NetworkError: LocalizedError {
   case transportError(Error)
   case invalidStatusCode
   case invalidData
   case invalidURL
   case parseError
 
-  var errorDescription: String? {
+  public var errorDescription: String? {
     switch self {
     case .transportError(let error):
       return "에러: \(error.localizedDescription)"

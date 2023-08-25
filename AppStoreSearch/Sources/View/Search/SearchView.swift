@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Core
 
 enum SearchState {
   case searching
@@ -144,7 +145,11 @@ struct SearchView_Previews: PreviewProvider {
   static var previews: some View {
     SearchView(
       searchService: SearchService(
-        router: NetworkRouter(session: MockURLSession())
+        router: NetworkRouter(
+          session: MockURLSession(
+            successMockData: SearchResponse.mockRawData
+          )
+        )
       ),
       historyService: HistoryService()
     )

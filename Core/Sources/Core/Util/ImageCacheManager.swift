@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ImageCacheManager {
+public final class ImageCacheManager {
 
   // MARK: - Constants
 
@@ -20,7 +20,7 @@ final class ImageCacheManager {
 
   // MARK: - Singleton
 
-  static let shared = ImageCacheManager()
+  public static let shared = ImageCacheManager()
 
   private init() {
     cache.countLimit = countLimit
@@ -32,34 +32,34 @@ final class ImageCacheManager {
   private let cache = NSCache<NSURL, UIImage>()
 
   /// 총 500개 까지만 캐싱
-  var countLimit = 500 {
+  public var countLimit = 500 {
     didSet { cache.countLimit = countLimit }
   }
   /// 메모리 캐싱 시의 용량 제약
-  var byteLimit: Int = Constants.initialByteLimit {
+  public var byteLimit: Int = Constants.initialByteLimit {
     didSet { cache.totalCostLimit = byteLimit }
   }
-  var megaByteLimit: Int {
+  public var megaByteLimit: Int {
     get { byteLimit / Constants.megaByteUnit }
     set { byteLimit = newValue * Constants.megaByteUnit }
   }
-  var kiloByteLimit: Int {
+  public var kiloByteLimit: Int {
     get { byteLimit / Constants.kiloByteUnit }
     set { byteLimit = newValue * Constants.kiloByteUnit }
   }
 
   // MARK: - Public Methods
 
-  func get(for url: URL) -> UIImage? {
+  public func get(for url: URL) -> UIImage? {
     cache.object(forKey: url as NSURL)
   }
 
-  func store(_ value: UIImage, for url: URL) {
+  public func store(_ value: UIImage, for url: URL) {
     let bytesOfImage = value.pngData()?.count ?? 0
     cache.setObject(value, forKey: url as NSURL, cost: bytesOfImage)
   }
 
-  func removeAll() {
+  public func removeAll() {
     cache.removeAllObjects()
   }
 

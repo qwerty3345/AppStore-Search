@@ -9,7 +9,7 @@ import Foundation
 
 extension Double {
   /// 1028.0 바이트를 표시하는 Double을 "1.1MB" 형태로 변환
-  var byteUnitText: String {
+  public var byteUnitText: String {
     for unit in ByteUnit.allCases {
       if self > unit.unitByte {
         let unitByte = Double(self) / unit.unitByte

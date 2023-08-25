@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Core
 
 enum SearchEndpoint {
   /// 앱 검색
