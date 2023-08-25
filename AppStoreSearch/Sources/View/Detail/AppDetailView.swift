@@ -9,18 +9,22 @@ import SwiftUI
 
 struct AppDetailView: View {
   let result: SearchResult
+  @State private var shareItem: ShareItem?
 
   var body: some View {
     ScrollView {
       VStack {
         Group {
-          DetailHeaderSection(result: result)
-            .padding(.bottom)
+          DetailHeaderSection(
+            result: result,
+            shareItem: $shareItem
+          )
+          .padding(.bottom)
 
           Divider().padding(.horizontal)
 
           DetailHorizontalInfoSection(result: result)
-
+          
           Divider().padding(.horizontal)
 
           DetailReleaseNoteSection(result: result)
@@ -41,6 +45,11 @@ struct AppDetailView: View {
       }
     }
     .navigationBarTitle("", displayMode: .inline)
+    .sheet(item: $shareItem) { shareItem in
+      ActivityView(
+        text: shareItem.trackName
+      )
+    }
   }
 }
 
