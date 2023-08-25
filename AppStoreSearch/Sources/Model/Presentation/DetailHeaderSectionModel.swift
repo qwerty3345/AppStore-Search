@@ -14,12 +14,12 @@ struct DetailHeaderSectionModel {
   let id: Int
   let trackViewUrl: String?
 
-  init(from searchResult: SearchResult) {
-    self.artworkUrl100 = searchResult.artworkUrl100
-    self.trackName = searchResult.trackName
-    self.artistName = searchResult.artistName
-    self.id = searchResult.trackId
-    self.trackViewUrl = searchResult.trackViewUrl
+  init(from result: SearchResult) {
+    self.artworkUrl100 = result.artworkUrl100
+    self.trackName = result.trackName
+    self.artistName = result.artistName
+    self.id = result.trackId
+    self.trackViewUrl = result.trackViewUrl
   }
 
   func toShareItem() -> ShareItem {

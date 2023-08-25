@@ -14,12 +14,12 @@ struct DetailHorizontalInfoSectionModel {
   let firstGenre: String
   let artistName: String
 
-  init(from searchResult: SearchResult) {
-    self.userRatingCount = searchResult.userRatingCount
-    self.averageUserRating = searchResult.averageUserRating
-    self.contentAdvisoryRating = searchResult.contentAdvisoryRating
-    self.firstGenre = searchResult.genres.first ?? ""
-    self.artistName = searchResult.artistName
+  init(from result: SearchResult) {
+    self.userRatingCount = result.userRatingCount
+    self.averageUserRating = result.averageUserRating
+    self.contentAdvisoryRating = result.contentAdvisoryRating
+    self.firstGenre = result.genres.first ?? ""
+    self.artistName = result.artistName
   }
 
   var userRatingCountText: String {

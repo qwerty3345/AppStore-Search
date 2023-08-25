@@ -41,7 +41,9 @@ struct AppDetailView: View {
             screenshots: .init(from: result)
           )
 
-          DetailDescriptionSection(result: result)
+          DetailDescriptionSection(
+            model: .init(from: result)
+          )
             .padding(.bottom)
 
           Divider().padding(.horizontal)

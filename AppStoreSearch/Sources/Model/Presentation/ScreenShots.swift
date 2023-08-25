@@ -14,8 +14,8 @@ struct ScreenShots {
     self.urls = urls
   }
 
-  init(from searchResult: SearchResult) {
-    self.urls = searchResult.screenshotUrls
+  init(from result: SearchResult) {
+    self.urls = result.screenshotUrls
   }
 }
 

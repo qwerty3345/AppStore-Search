@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct DetailDescriptionSection: View {
-  let result: SearchResult
+  let model: DetailDescriptionSectionModel
 
   var body: some View {
     VStack {
-      ExpandableTextView(text: result.description)
+      ExpandableTextView(text: model.description)
         .padding(.bottom)
 
       Button {
@@ -20,7 +20,7 @@ struct DetailDescriptionSection: View {
       } label: {
         HStack {
           VStack(alignment: .leading) {
-            Text(result.artistName)
+            Text(model.artistName)
               .foregroundColor(.accentColor)
               .font(.callout)
 
@@ -43,6 +43,8 @@ struct DetailDescriptionSection: View {
 
 struct DetailDescriptionSection_Previews: PreviewProvider {
   static var previews: some View {
-    DetailDescriptionSection(result: .mock)
+    DetailDescriptionSection(
+      model: .init(from: .mock)
+    )
   }
 }
