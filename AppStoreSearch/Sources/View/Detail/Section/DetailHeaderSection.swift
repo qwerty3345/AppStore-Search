@@ -12,17 +12,17 @@ struct DetailHeaderSection: View {
 
   var body: some View {
     HStack {
-      RoundedRectangle(cornerRadius: 16)
-        .foregroundColor(.gray)
-        .frame(width: 120, height: 120)
-        .padding(.trailing)
-      //        AsyncImage(url: result.artworkUrl100)
-      //          .cornerRadius(16)
+      RemoteImage(url: result.artworkUrl100) { image in
+        image
+          .resizable()
+          .cornerRadius(16)
+          .frame(width: 110, height: 110)
+      }
 
       VStack {
         VStack(alignment: .leading) {
           Text(result.trackName)
-            .font(.title2)
+            .font(.title3)
             .fontWeight(.bold)
           Text(result.artistName)
             .foregroundColor(.gray)

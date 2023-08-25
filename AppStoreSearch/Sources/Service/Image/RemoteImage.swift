@@ -20,7 +20,7 @@ struct RemoteImage<
   private let imageView: (Image) -> ImageView
   private let placeHolderView: () -> PlaceHolderView?
 
-  @ObservedObject private var service = RemoteImageService()
+  @StateObject private var service = RemoteImageService()
 
   // MARK: - Initialization
 

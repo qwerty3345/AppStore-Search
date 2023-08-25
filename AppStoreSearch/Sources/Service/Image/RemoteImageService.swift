@@ -21,6 +21,7 @@ final class RemoteImageService: ObservableObject {
 
   var state: RemoteImageState = .loading {
     didSet {
+      guard state != oldValue else { return }
       objectWillChange.send()
     }
   }

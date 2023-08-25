@@ -13,27 +13,31 @@ struct AppDetailView: View {
   var body: some View {
     ScrollView {
       VStack {
-        DetailHeaderSection(result: result)
-          .padding(.bottom)
+        Group {
+          DetailHeaderSection(result: result)
+            .padding(.bottom)
 
-        Divider().padding(.horizontal)
+          Divider().padding(.horizontal)
 
-        DetailHorizontalInfoSection(result: result)
+          DetailHorizontalInfoSection(result: result)
 
-        Divider().padding(.horizontal)
+          Divider().padding(.horizontal)
 
-        DetailReleaseNoteSection(result: result)
+          DetailReleaseNoteSection(result: result)
 
-        Divider().padding(.horizontal)
+          Divider().padding(.horizontal)
+        }
 
-        DetailScreenShotSection(result: result)
+        Group {
+          DetailScreenShotSection(result: result)
 
-        DetailDescriptionSection(result: result)
-          .padding(.bottom)
+          DetailDescriptionSection(result: result)
+            .padding(.bottom)
 
-        Divider().padding(.horizontal)
+          Divider().padding(.horizontal)
 
-        DetailInformationSection(result: result)
+          DetailInformationSection(result: result)
+        }
       }
     }
   }
