@@ -64,7 +64,7 @@ struct SearchView: View {
     }
     .onAppear {
       Task {
-        histories = await historyService.fetchHistories()
+        histories = historyService.fetchHistories()
       }
     }
   }
@@ -134,7 +134,7 @@ struct SearchView: View {
       searchState = .showingResult
 
       historyService.save(history: query)
-      histories = await historyService.fetchHistories()
+      histories = historyService.fetchHistories()
     }
   }
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 protocol HistoryServiceProtocol {
-  func fetchHistories() async -> [String]
+  func fetchHistories() -> [String]
   func save(history: String)
 }
 
@@ -24,8 +24,7 @@ final class HistoryService: HistoryServiceProtocol {
 
   // MARK: - Public Methods
 
-  @MainActor
-  func fetchHistories() async -> [String] {
+  func fetchHistories() -> [String] {
     return histories
   }
 
