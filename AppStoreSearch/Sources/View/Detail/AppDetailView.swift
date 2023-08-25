@@ -16,7 +16,7 @@ struct AppDetailView: View {
       VStack {
         Group {
           DetailHeaderSection(
-            result: result,
+            model: .init(from: result),
             shareItem: $shareItem
           )
           .padding(.bottom)
