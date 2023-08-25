@@ -11,6 +11,7 @@ struct SearchResultView: View {
   @Binding var searchResults: [SearchResult]
 
   var body: some View {
+    // TODO: 검색 결과가 없을 때 나타내기
     List(searchResults) { result in
       NavigationLink(value: result) {
         VStack {
@@ -26,9 +27,11 @@ struct SearchResultView: View {
 
   private func header(of result: SearchResult) -> some View {
     HStack {
-      AsyncImage(url: result.artworkUrl60)
-        .cornerRadius(8)
-        .frame(width: 64, height: 64)
+      RemoteImage(url: result.artworkUrl60) { image in
+        image
+          .cornerRadius(8)
+      }
+      .frame(width: 64, height: 64)
 
       VStack(alignment: .leading, spacing: 4) {
         Text(result.trackName)
@@ -37,7 +40,7 @@ struct SearchResultView: View {
 
         Text(result.genres.first ?? "")
           .font(.caption)
-          .foregroundColor(.gray)
+          .foregroundColor(.gray.opacity(0.2))
       }
 
       Spacer()
@@ -59,16 +62,15 @@ struct SearchResultView: View {
   private func screenShotView(of result: SearchResult) -> some View {
     HStack {
       ForEach(result.screenshotUrls.prefix(3), id: \.self) {
-        AsyncImage(url: $0) { image in
+        RemoteImage(url: $0) { image in
           image
             .resizable()
-            .scaledToFit()
             .cornerRadius(8)
-        } placeholder: {
+        } placeHolderView: {
           RoundedRectangle(cornerRadius: 8)
             .fill(.gray)
-            .aspectRatio(Constants.screenShotRatio, contentMode: .fit)
         }
+        .aspectRatio(Constants.screenShotRatio, contentMode: .fit)
       }
     }
     .padding(.horizontal)

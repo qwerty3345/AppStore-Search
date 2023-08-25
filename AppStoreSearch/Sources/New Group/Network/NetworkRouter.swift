@@ -38,4 +38,13 @@ final class NetworkRouter: NetworkRouterProtocol {
 
     return decodedData
   }
+
+  func requestData(with url: URL) async throws -> Data {
+    let (data, response) = try await session.data(from: url, delegate: nil)
+
+    guard let httpResponse = response as? HTTPURLResponse,
+          200..<300 ~= httpResponse.statusCode else { throw NetworkError.invalidStatusCode }
+
+    return data
+  }
 }

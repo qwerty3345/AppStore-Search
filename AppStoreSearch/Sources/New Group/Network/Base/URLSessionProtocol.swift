@@ -12,6 +12,11 @@ protocol URLSessionProtocol {
     for request: URLRequest,
     delegate: URLSessionTaskDelegate?
   ) async throws -> (Data, URLResponse)
+
+  func data(
+    from url: URL,
+    delegate: URLSessionTaskDelegate?
+  ) async throws -> (Data, URLResponse)
 }
 
 extension URLSession: URLSessionProtocol { }

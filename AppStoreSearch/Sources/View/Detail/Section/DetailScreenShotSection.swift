@@ -25,18 +25,14 @@ struct DetailScreenShotSection: View {
         
         TabView {
           ForEach(result.screenshotUrls, id: \.self) {
-            AsyncImage(url: $0) { image in
+            RemoteImage(url: $0) { image in
               image
                 .resizable()
                 .scaledToFit()
                 .cornerRadius(8)
-                .frame(width: width)
-            } placeholder: {
-              RoundedRectangle(cornerRadius: 8)
-                .fill(.gray)
-                .frame(width: width)
-                .aspectRatio(Constants.screenShotRatio, contentMode: .fit)
             }
+            .frame(width: width)
+            .aspectRatio(Constants.screenShotRatio, contentMode: .fit)
           }
         }
         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
