@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DetailInformationSection: View {
-  let result: SearchResult
+  let model: DetailInformationSectionModel
 
   var body: some View {
     VStack {
@@ -26,7 +26,7 @@ struct DetailInformationSection: View {
             .font(.callout)
             .foregroundColor(.gray)
           Spacer()
-          Text(information.value(from: result))
+          Text(information.value(from: model))
             .font(.body)
         }
 
@@ -54,18 +54,20 @@ enum DetailInformation: CaseIterable {
     }
   }
 
-  func value(from result: SearchResult) -> String {
+  func value(
+    from model: DetailInformationSectionModel
+  ) -> String {
     switch self {
-    case .developer: return result.artistName
-    case .size: return result.fileSizeByteText
-    case .category: return result.genres.first ?? ""
-    case .regulation: return result.contentAdvisoryRating
+    case .developer: return model.artistName
+    case .size: return model.fileSizeByteText
+    case .category: return model.firstGenre
+    case .regulation: return model.contentAdvisoryRating
     }
   }
 }
 
 struct DetailInformationSection_Previews: PreviewProvider {
   static var previews: some View {
-    DetailInformationSection(result: .mock)
+    DetailInformationSection(model: .init(from: .mock))
   }
 }

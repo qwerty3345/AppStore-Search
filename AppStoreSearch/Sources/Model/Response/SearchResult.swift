@@ -53,6 +53,9 @@ struct SearchResult: Decodable, Hashable {
 
   /// 파일 사이즈 바이트
   let fileSizeBytes: String
+
+  /// 지원 언어들의 코드 ("EN", "KO"...)
+  let languageCodesISO2A: [String]?
 }
 
 // MARK: - Identifiable

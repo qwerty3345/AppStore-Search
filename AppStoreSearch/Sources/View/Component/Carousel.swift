@@ -90,12 +90,12 @@ struct CarouselView_Previews: PreviewProvider {
 
 struct CarouselViewPreView: View {
   @State var index = 0
-  let items = SearchResult.mock.screenshotUrls
-  let ratio = SearchResult.mock.screenShotMode.ratio
+  let screenshots = ScreenShots(from: .mock)
+  let ratio = ScreenShots(from: .mock).mode.ratio
   let width = UIScreen.main.bounds.width * 0.7
 
   var body: some View {
-    Carousel(items: items, index: $index) { item in
+    Carousel(items: screenshots.urls, index: $index) { item in
       RemoteImage(url: item) { image in
         image
           .resizable()

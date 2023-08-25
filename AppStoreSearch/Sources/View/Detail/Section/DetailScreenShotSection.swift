@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DetailScreenShotSection: View {
-  let result: SearchResult
+  let screenshots: ScreenShots
   @State private var index = 0
 
   var body: some View {
@@ -19,13 +19,13 @@ struct DetailScreenShotSection: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal)
       
-      let isLongWidth = result.screenShotMode == .longWidth
+      let isLongWidth = screenshots.mode == .longWidth
       let screenWidth = UIScreen.main.bounds.width
       let width = isLongWidth ? screenWidth * 0.9 : screenWidth * 0.6
-      let height = width / result.screenShotMode.ratio
+      let height = width / screenshots.mode.ratio
 
       Carousel(
-        items: result.screenshotUrls,
+        items: screenshots.urls,
         index: $index,
         spacing: 10,
         trailingSpace: isLongWidth ? 40 : 140
@@ -46,7 +46,7 @@ struct DetailScreenShotSection: View {
 
 struct DetailReleaseSection_Previews: PreviewProvider {
   static var previews: some View {
-    DetailScreenShotSection(result: .mock)
+    DetailScreenShotSection(screenshots: .init(from: .mock))
       .previewLayout(.sizeThatFits)
   }
 }

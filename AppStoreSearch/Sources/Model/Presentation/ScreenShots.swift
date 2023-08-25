@@ -1,5 +1,5 @@
 //
-//  ScreenshotMode.swift
+//  ScreenShots.swift
 //  AppStoreSearch
 //
 //  Created by Mason Kim on 2023/08/25.
@@ -7,9 +7,23 @@
 
 import Foundation
 
-extension SearchResult {
-  var screenShotMode: ScreenShotMode {
-    guard let screenShotURL = screenshotUrls.first else { return .none }
+struct ScreenShots {
+  let urls: [URL]
+
+  init(urls: [URL]) {
+    self.urls = urls
+  }
+
+  init(from result: SearchResult) {
+    self.urls = result.screenshotUrls
+  }
+}
+
+// MARK: - 스크린샷 비율 관련 로직
+
+extension ScreenShots {
+  var mode: ScreenShotMode {
+    guard let screenShotURL = urls.first else { return .none }
     return ScreenShotMode(screenShotURL: screenShotURL)
   }
 }

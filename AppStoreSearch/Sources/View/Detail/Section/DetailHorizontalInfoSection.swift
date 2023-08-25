@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DetailHorizontalInfoSection: View {
-  let result: SearchResult
+  let model: DetailHorizontalInfoSectionModel
 
   var divider: some View {
     Divider().padding(.vertical)
@@ -34,10 +34,10 @@ struct DetailHorizontalInfoSection: View {
 
   private var ratingInfoView: some View {
     InfoView(
-      headerText: "\(result.userRatingCountText)개의 평가",
-      footerText: "\(result.averageUserRatingText)"
+      headerText: "\(model.userRatingCountText)개의 평가",
+      footerText: "\(model.averageUserRatingText)"
     ) {
-      StarRatingView(rating: result.averageUserRating)
+      StarRatingView(rating: model.averageUserRating)
     }
   }
 
@@ -46,7 +46,7 @@ struct DetailHorizontalInfoSection: View {
       headerText: "연령",
       footerText: "세"
     ) {
-      Text("\(result.contentAdvisoryRating)")
+      Text("\(model.contentAdvisoryRating)")
         .font(.title2)
         .fontWeight(.bold)
     }
@@ -55,7 +55,7 @@ struct DetailHorizontalInfoSection: View {
   private var categoryInfoView: some View {
     InfoView(
       headerText: "카테고리",
-      footerText: "\(result.genres.first ?? "")"
+      footerText: "\(model.firstGenre)"
     ) {
       Image(systemName: "tray")
         .font(.title2)
@@ -66,7 +66,7 @@ struct DetailHorizontalInfoSection: View {
   private var developerInfoView: some View {
     InfoView(
       headerText: "개발자",
-      footerText: "\(result.artistName)"
+      footerText: "\(model.artistName)"
     ) {
       Image(systemName: "person.crop.square")
         .font(.title2)
@@ -110,6 +110,6 @@ struct InfoView<Content: View>: View {
 
 struct DetailInfoSection_Previews: PreviewProvider {
   static var previews: some View {
-    DetailHorizontalInfoSection(result: .mock)
+    DetailHorizontalInfoSection(model: .init(from: .mock))
   }
 }

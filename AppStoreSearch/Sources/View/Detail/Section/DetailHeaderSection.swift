@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct DetailHeaderSection: View {
-  let result: SearchResult
+  let model: DetailHeaderSectionModel
   @Binding var shareItem: ShareItem?
 
   var body: some View {
     HStack {
-      RemoteImage(url: result.artworkUrl100) { image in
+      RemoteImage(url: model.artworkUrl100) { image in
         image
           .resizable()
           .cornerRadius(16)
@@ -22,10 +22,10 @@ struct DetailHeaderSection: View {
 
       VStack {
         VStack(alignment: .leading) {
-          Text(result.trackName)
+          Text(model.trackName)
             .font(.title3)
             .fontWeight(.bold)
-          Text(result.artistName)
+          Text(model.artistName)
             .foregroundColor(.gray)
             .font(.callout)
             .fontWeight(.medium)
@@ -47,11 +47,7 @@ struct DetailHeaderSection: View {
           Spacer()
 
           Button {
-            shareItem = ShareItem(
-              id: result.id,
-              trackName: result.trackName,
-              trackViewUrl: result.trackViewUrl
-            )
+            shareItem = model.toShareItem()
           } label: {
             Image(systemName: "square.and.arrow.up")
               .resizable()
@@ -69,7 +65,7 @@ struct DetailHeaderSection: View {
 struct DetailHeaderSection_Previews: PreviewProvider {
   static var previews: some View {
     DetailHeaderSection(
-      result: .mock,
+      model: .init(from: .mock),
       shareItem: .constant(nil)
     )
   }

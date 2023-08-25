@@ -16,31 +16,41 @@ struct AppDetailView: View {
       VStack {
         Group {
           DetailHeaderSection(
-            result: result,
+            model: .init(from: result),
             shareItem: $shareItem
           )
           .padding(.bottom)
 
           Divider().padding(.horizontal)
 
-          DetailHorizontalInfoSection(result: result)
+          DetailHorizontalInfoSection(
+            model: .init(from: result)
+          )
           
           Divider().padding(.horizontal)
 
-          DetailReleaseNoteSection(result: result)
+          DetailReleaseNoteSection(
+            model: .init(from: result)
+          )
 
           Divider().padding(.horizontal)
         }
 
         Group {
-          DetailScreenShotSection(result: result)
+          DetailScreenShotSection(
+            screenshots: .init(from: result)
+          )
 
-          DetailDescriptionSection(result: result)
+          DetailDescriptionSection(
+            model: .init(from: result)
+          )
             .padding(.bottom)
 
           Divider().padding(.horizontal)
 
-          DetailInformationSection(result: result)
+          DetailInformationSection(
+            model: .init(from: result)
+          )
         }
       }
     }
