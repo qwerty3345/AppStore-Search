@@ -12,8 +12,5 @@ extension SearchResult {
 
 
 
-  var fileSizeByteText: String {
-    let byte = Double(fileSizeBytes) ?? 0
-    return byte.byteUnitText
-  }
+
 }

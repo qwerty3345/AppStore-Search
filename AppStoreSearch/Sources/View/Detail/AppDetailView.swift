@@ -46,7 +46,9 @@ struct AppDetailView: View {
 
           Divider().padding(.horizontal)
 
-          DetailInformationSection(result: result)
+          DetailInformationSection(
+            model: .init(from: result)
+          )
         }
       }
     }
