@@ -47,7 +47,7 @@ struct AppDetailView: View {
     .navigationBarTitle("", displayMode: .inline)
     .sheet(item: $shareItem) { shareItem in
       ActivityView(
-        text: shareItem.trackName
+        text: shareItem.shareText
       )
     }
   }

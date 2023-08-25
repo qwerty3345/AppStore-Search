@@ -49,7 +49,8 @@ struct DetailHeaderSection: View {
           Button {
             shareItem = ShareItem(
               id: result.id,
-              trackName: result.trackName
+              trackName: result.trackName,
+              trackViewUrl: result.trackViewUrl
             )
           } label: {
             Image(systemName: "square.and.arrow.up")
