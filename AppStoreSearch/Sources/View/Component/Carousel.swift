@@ -47,7 +47,7 @@ struct Carousel<Content: View, T: Hashable>: View {
       HStack(spacing: spacing) {
         ForEach(items, id: \.self) { item in
           content(item)
-            .frame(width: geometry.size.width - trailingSpace)
+            .frame(width: max(geometry.size.width - trailingSpace, 0))
         }
       }
       .padding(.horizontal, spacing)
