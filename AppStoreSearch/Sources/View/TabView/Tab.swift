@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Core
 
 enum Tab: CaseIterable {
   case today

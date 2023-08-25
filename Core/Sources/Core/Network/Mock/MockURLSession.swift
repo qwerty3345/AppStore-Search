@@ -8,7 +8,7 @@
 import Foundation
 
 #if DEBUG
-final class MockURLSession: URLSessionProtocol {
+public final class MockURLSession: URLSessionProtocol {
 
   // MARK: - Properties
 
@@ -19,17 +19,17 @@ final class MockURLSession: URLSessionProtocol {
     return urlSession
   }()
 
-  let isFailRequest: Bool
-  let successMockData: Data
+  public let isFailRequest: Bool
+  public let successMockData: Data
 
-  let successStatusCode = 200
-  let failureStatusCode = 410
+  public let successStatusCode = 200
+  public let failureStatusCode = 410
 
   // MARK: - Initialization
 
-  init(
+  public init(
     isFailRequest: Bool = false,
-    successMockData: Data = SearchResponse.mockRawData
+    successMockData: Data
   ) {
     self.isFailRequest = isFailRequest
     self.successMockData = successMockData
@@ -37,14 +37,14 @@ final class MockURLSession: URLSessionProtocol {
 
   // MARK: - Public Methods
 
-  func data(
+  public func data(
     for request: URLRequest,
     delegate: URLSessionTaskDelegate?
   ) async throws -> (Data, URLResponse) {
     return try await data(from: request.url!, delegate: nil)
   }
 
-  func data(
+  public func data(
     from url: URL,
     delegate: URLSessionTaskDelegate?
   ) async throws -> (Data, URLResponse) {

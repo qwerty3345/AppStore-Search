@@ -21,7 +21,7 @@ extension Date {
   }()
 
   /// Date 형태를 지나간 시간을 기준으로 변환합니다. ex) "7주 전"
-  func formatPassedDay() -> String {
+  public func formatPassedDay() -> String {
     return Self.passedDayFormatter.string(from: self, to: Date()) ?? ""
   }
 }

@@ -5,8 +5,8 @@
 //  Created by Mason Kim on 2023/08/25.
 //
 
-import Foundation
 import UIKit
+import Core
 
 enum RemoteImageServiceError: Error {
   case failToCreateImage

@@ -7,12 +7,12 @@
 
 import Foundation
 
-protocol NetworkRouterProtocol: AnyObject {
+public protocol NetworkRouterProtocol: AnyObject {
   func request<T: Decodable>(with endPoint: EndPointType, type: T.Type) async throws -> T
 }
 
 /// Concurrency 를 활용한 Network Router
-final class NetworkRouter: NetworkRouterProtocol {
+public final class NetworkRouter: NetworkRouterProtocol {
 
   // MARK: - Properties
 
@@ -21,13 +21,13 @@ final class NetworkRouter: NetworkRouterProtocol {
 
   // MARK: - Initialization
 
-  init(session: URLSessionProtocol = URLSession.shared) {
+  public init(session: URLSessionProtocol = URLSession.shared) {
     self.session = session
   }
 
   // MARK: - Public Methods
 
-  func request<T: Decodable>(with endPoint: EndPointType, type: T.Type) async throws -> T {
+  public func request<T: Decodable>(with endPoint: EndPointType, type: T.Type) async throws -> T {
     let urlRequest = try endPoint.buildURLRequest()
     let (data, response) = try await session.data(for: urlRequest, delegate: nil)
 
@@ -39,7 +39,7 @@ final class NetworkRouter: NetworkRouterProtocol {
     return decodedData
   }
 
-  func requestData(with url: URL) async throws -> Data {
+  public func requestData(with url: URL) async throws -> Data {
     let (data, response) = try await session.data(from: url, delegate: nil)
 
     guard let httpResponse = response as? HTTPURLResponse,
