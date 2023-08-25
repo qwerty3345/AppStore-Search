@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DetailReleaseNoteSection: View {
-  let result: SearchResult
+  let model: DetailReleaseNoteSectionModel
 
   var body: some View {
     VStack(spacing: 12) {
@@ -17,19 +17,17 @@ struct DetailReleaseNoteSection: View {
           .font(.title2)
           .fontWeight(.bold)
         Spacer()
-        Button("버전 기록") {
-          // 버전 기록 화면으로 이동
-        }
+        Button("버전 기록") {}
       }
 
       HStack {
-        Text("버전 \(result.version)")
+        Text("버전 \(model.version)")
         Spacer()
-        Text("\(result.updateDatePassedDayText) 전")
+        Text("\(model.updateDatePassedDayText) 전")
       }
       .foregroundColor(.gray)
 
-      if let releaseNotes = result.releaseNotes {
+      if let releaseNotes = model.releaseNotes {
         ExpandableTextView(text: releaseNotes)
       }
     }
@@ -39,6 +37,8 @@ struct DetailReleaseNoteSection: View {
 
 struct DetailReleaseNoteSection_Previews: PreviewProvider {
   static var previews: some View {
-    DetailReleaseNoteSection(result: SearchResponse.mock.results[6])
+    DetailReleaseNoteSection(
+      model: .init(from: .mock)
+    )
   }
 }

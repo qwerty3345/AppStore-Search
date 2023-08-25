@@ -29,7 +29,9 @@ struct AppDetailView: View {
           
           Divider().padding(.horizontal)
 
-          DetailReleaseNoteSection(result: result)
+          DetailReleaseNoteSection(
+            model: .init(from: result)
+          )
 
           Divider().padding(.horizontal)
         }
