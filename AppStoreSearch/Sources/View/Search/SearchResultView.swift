@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct SearchResultView: View {
-  @Binding var searchResults: [SearchResult]
+  @Binding var results: [SearchResult]
 
   var body: some View {
     // TODO: 검색 결과가 없을 때 나타내기
-    List(searchResults) { result in
+    List(results) { result in
       VStack {
-        header(of: result)
-        screenShotView(of: result)
+        header(with: result)
+        screenShotView(with: .init(from: result))
       }
       .overlay( // 네비게이션 링크의 ">" 를 지우기 위해 overlay로 처리
         NavigationLink(value: result, label: {})
@@ -26,7 +26,7 @@ struct SearchResultView: View {
     .listStyle(.plain)
   }
 
-  private func header(of result: SearchResult) -> some View {
+  private func header(with result: SearchResult) -> some View {
     HStack {
       RemoteImage(url: result.artworkUrl60) { image in
         image
@@ -59,20 +59,22 @@ struct SearchResultView: View {
     }
   }
 
-  private func screenShotView(of result: SearchResult) -> some View {
+  private func screenShotView(with screenShots: ScreenShots) -> some View {
+    let isLongWidth = screenShots.mode == .longWidth
+
     return ScrollView(.horizontal, showsIndicators: false) {
       HStack(spacing: 8) {
-        let isLongWidth = result.screenShotMode == .longWidth
+        let ratio = screenShots.mode.ratio
 
         let shortSideSize = UIScreen.main.bounds.width / 3 - 16
-        let longSideSize = isLongWidth ?
-        shortSideSize * result.screenShotMode.ratio :
-        shortSideSize / result.screenShotMode.ratio
+        let longSideSize = isLongWidth
+        ? shortSideSize * ratio
+        : shortSideSize / ratio
 
         let width = isLongWidth ? longSideSize : shortSideSize
         let height = isLongWidth ? shortSideSize : longSideSize
 
-        ForEach(result.screenshotUrls.prefix(3), id: \.self) {
+        ForEach(screenShots.urls.prefix(3), id: \.self) {
           RemoteImage(url: $0) { image in
             image
               .resizable()
@@ -86,14 +88,14 @@ struct SearchResultView: View {
         }
       }
     }
-    .scrollDisabled(result.screenShotMode == .longHeight)
+    .scrollDisabled(!isLongWidth)
   }
 }
 
 struct SearchResultView_Previews: PreviewProvider {
   static var previews: some View {
     SearchResultView(
-      searchResults: .constant(SearchResponse.mock.results)
+      results: .constant(SearchResponse.mock.results)
     )
   }
 }

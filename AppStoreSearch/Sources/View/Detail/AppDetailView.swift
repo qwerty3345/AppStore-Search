@@ -35,7 +35,9 @@ struct AppDetailView: View {
         }
 
         Group {
-          DetailScreenShotSection(result: result)
+          DetailScreenShotSection(
+            screenshots: .init(from: result)
+          )
 
           DetailDescriptionSection(result: result)
             .padding(.bottom)

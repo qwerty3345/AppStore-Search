@@ -77,7 +77,7 @@ struct SearchView: View {
       recentSearchList
     case .showingResult:
       SearchResultView(
-        searchResults: $searchResults
+        results: $searchResults
       )
     }
   }
