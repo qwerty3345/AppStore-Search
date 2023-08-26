@@ -15,10 +15,15 @@ final class SearchReducer: ReducerProtocol {
 
   struct State {
     var searchText: String = ""
+    var countLimit: Int = searchCountLimitUnit
     var showingState: ShowingState = .searching
     var searchResults: [SearchResult] = []
     var suggestions: [String] = []
     var histories: [String] = []
+
+    var isLimit: Bool {
+      countLimit >= searchCountMaxLimit
+    }
   }
 
   enum Action {
@@ -26,6 +31,7 @@ final class SearchReducer: ReducerProtocol {
     case change(searchText: String)
     case search
     case selectToSearch(text: String)
+    case loadMore
     case fetchComplete(results: [SearchResult])
     case fetchError
   }
@@ -36,6 +42,9 @@ final class SearchReducer: ReducerProtocol {
 
   let searchService: SearchServiceProtocol
   let historyService: HistoryServiceProtocol
+
+  static let searchCountLimitUnit: Int = 20
+  static let searchCountMaxLimit: Int = 200
 
   // MARK: - Initialization
 
@@ -62,6 +71,10 @@ final class SearchReducer: ReducerProtocol {
         return effect
       }
 
+    case .loadMore:
+      guard state.countLimit < Self.searchCountMaxLimit else { break }
+      return searchServiceEffect(state)
+
     case let .fetchComplete(results: results):
       fetchCompleteAction(&state, results: results)
 
@@ -82,6 +95,7 @@ final class SearchReducer: ReducerProtocol {
     state.searchText = searchText
     state.showingState = .searching
     state.searchResults = []
+    state.countLimit = Self.searchCountLimitUnit
 
     state.suggestions = state.histories.filter {
       $0.contains(searchText)
@@ -97,8 +111,13 @@ final class SearchReducer: ReducerProtocol {
     state.histories = historyService.fetchHistories()
     state.showingState = .loading
 
+    return searchServiceEffect(state)
+  }
+
+  private func searchServiceEffect(_ state: State) -> Effect {
+    let keyword = state.searchText
     return .publisher(
-      searchService.search(of: keyword)
+      searchService.search(of: keyword, countLimit: state.countLimit)
         .map { results in
           Action.fetchComplete(results: results)
         }
@@ -115,6 +134,7 @@ final class SearchReducer: ReducerProtocol {
       return
     }
 
+    state.countLimit += Self.searchCountLimitUnit
     state.searchResults = results
     state.showingState = .showingResult
   }
