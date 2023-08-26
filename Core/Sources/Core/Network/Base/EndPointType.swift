@@ -17,13 +17,13 @@ public protocol EndPointType {
   var task: HTTPTask { get }
   var headers: HTTPHeaders { get }
 
-  func buildURLRequest() throws -> URLRequest
+  func buildURLRequest() -> URLRequest
 }
 
 // MARK: - build URLRequest 기본구현
 
 extension EndPointType {
-  public func buildURLRequest() throws -> URLRequest {
+  public func buildURLRequest() -> URLRequest {
     var url: URL = baseURL
     url.appendPathComponent(path ?? "")
 

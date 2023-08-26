@@ -37,17 +37,7 @@ public final class MockURLSession: URLSessionProtocol {
 
   // MARK: - Public Methods
 
-  public func data(
-    for request: URLRequest,
-    delegate: URLSessionTaskDelegate?
-  ) async throws -> (Data, URLResponse) {
-    return try await data(from: request.url!, delegate: nil)
-  }
-
-  public func data(
-    from url: URL,
-    delegate: URLSessionTaskDelegate?
-  ) async throws -> (Data, URLResponse) {
+  public func dataTaskPublisher(for url: URL) -> URLSession.DataTaskPublisher {
     let successResponse = HTTPURLResponse(
       url: url,
       statusCode: successStatusCode,
@@ -66,7 +56,7 @@ public final class MockURLSession: URLSessionProtocol {
       return (data, response, nil)
     }
 
-    return try await urlSession.data(from: url)
+    return urlSession.dataTaskPublisher(for: url)
   }
 }
 #endif

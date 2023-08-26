@@ -8,15 +8,7 @@
 import Foundation
 
 public protocol URLSessionProtocol {
-  func data(
-    for request: URLRequest,
-    delegate: URLSessionTaskDelegate?
-  ) async throws -> (Data, URLResponse)
-
-  func data(
-    from url: URL,
-    delegate: URLSessionTaskDelegate?
-  ) async throws -> (Data, URLResponse)
+  func dataTaskPublisher(for url: URL) -> URLSession.DataTaskPublisher
 }
 
 extension URLSession: URLSessionProtocol { }

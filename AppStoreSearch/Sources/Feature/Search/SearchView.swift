@@ -8,27 +8,10 @@
 import SwiftUI
 import Core
 
-enum SearchState {
-  case searching
-  case showingResult
-}
-
 struct SearchView: View {
   @State private var searchText = ""
-  @State private var searchState: SearchState = .searching
-  @State private var searchResults: [SearchResult] = []
 
-  @State private var suggestions: [String] = []
-  @State private var selectedSuggestion: String?
-
-  @State private var currentSearchTask: Task<(), Error>?
-
-  @State private var histories: [String] = []
-
-  let mockRecentSearch = ["a", "b"]
-
-  let searchService: SearchServiceProtocol
-  let historyService: HistoryServiceProtocol
+  @EnvironmentObject var store: StoreOf<SearchReducer>
 
   var body: some View {
     NavigationStack {
@@ -44,51 +27,47 @@ struct SearchView: View {
       prompt: "App Store"
     )
     .searchSuggestions {
-      if searchState == .searching {
+      if store.state.showingState == .searching {
         suggestionView
       }
     }
     .onSubmit(of: .search) {
-      search(of: searchText)
+      store.dispatch(.search(keyword: searchText))
     }
     .onChange(of: searchText) { searchText in
-      searchState = .searching
-
-      suggestions = histories.filter {
-        $0.contains(searchText)
-      }
-    }
-    .onChange(of: selectedSuggestion) { selectedSuggestion in
-      if let selectedSuggestion, !selectedSuggestion.isEmpty {
-        searchText = selectedSuggestion
-        search(of: selectedSuggestion)
-      }
+      store.dispatch(.change(keyword: searchText))
     }
     .onAppear {
-      Task {
-        histories = historyService.fetchHistories()
-      }
+      store.dispatch(.onAppear)
     }
+    .animation(.easeInOut, value: store.state.showingState)
   }
 
   @ViewBuilder
   private var showingList: some View {
-    switch searchState {
+    switch store.state.showingState {
     case .searching:
       recentSearchList
     case .showingResult:
       SearchResultView(
-        results: $searchResults
+        results: store.state.searchResults
       )
+    case .loading:
+      ProgressView()
+        .progressViewStyle(.circular)
+    case .showingError:
+      errorStateView
+    case .showingEmpty:
+      emptyStateView
     }
   }
 
   private var recentSearchList: some View {
     Section {
-      List(histories, id: \.self) { data in
+      List(store.state.histories, id: \.self) { data in
         Button {
           searchText = data
-          search(of: searchText)
+          store.dispatch(.search(keyword: data))
         } label: {
           Text(data)
             .foregroundColor(.blue)
@@ -111,7 +90,7 @@ struct SearchView: View {
   }
 
   private var suggestionView: some View {
-    ForEach(suggestions, id: \.self) { suggestion in
+    ForEach(store.state.suggestions, id: \.self) { suggestion in
       HStack(spacing: 0) {
         Text("")  // Image가 가장 앞에 있으면 Divider가 살짝 잘리는 이슈 때문에 추가함.
 
@@ -120,39 +99,52 @@ struct SearchView: View {
         Text(suggestion)
       }
       .onTapGesture {
-        selectedSuggestion = suggestion
+        store.dispatch(.select(suggestion: suggestion))
       }
     }
     .listStyle(.plain)
   }
 
-  // MARK: - Private Methods
+  private func stateView(text: String, imageName: String) -> some View {
+    VStack {
+      Image(systemName: imageName)
+        .resizable()
+        .frame(width: 80, height: 80)
+        .padding(.bottom)
 
-  private func search(of query: String) {
-    currentSearchTask?.cancel()
-
-    currentSearchTask = Task {
-      searchResults = try await searchService.search(of: query)
-      searchState = .showingResult
-
-      historyService.save(history: query)
-      histories = historyService.fetchHistories()
+      Text(text)
+        .multilineTextAlignment(.center)
+        .font(.title2)
+        .fontWeight(.bold)
     }
+  }
+
+  private var errorStateView: some View {
+    stateView(
+      text: "에러가 발생했어요.",
+      imageName: "xmark.app"
+    )
+  }
+
+  private var emptyStateView: some View {
+    stateView(
+      text: "결과값이 없어요.\n다른 검색어로 검색해주세요.",
+      imageName: "nosign.app"
+    )
   }
 }
 
 struct SearchView_Previews: PreviewProvider {
   static var previews: some View {
-    SearchView(
-      searchService: SearchService(
-        router: NetworkRouter(
-          session: MockURLSession(
-            successMockData: SearchResponse.mockRawData
-          )
-        )
-      ),
-      historyService: HistoryService()
-    )
+    SearchView()
+      .environmentObject(
+        Store(reducer: SearchReducer(
+          searchService: SearchService(
+            router: NetworkRouter()
+          ),
+          historyService: HistoryService()
+        ))
+      )
   }
 }
 

@@ -7,9 +7,10 @@
 
 import Foundation
 import Core
+import Combine
 
 protocol SearchServiceProtocol {
-  func search(of query: String) async throws -> [SearchResult]
+  func search(of query: String) -> AnyPublisher<[SearchResult], Error>
 }
 
 struct SearchService: SearchServiceProtocol {
@@ -26,12 +27,12 @@ struct SearchService: SearchServiceProtocol {
 
   // MARK: - Public Methods
 
-  func search(of query: String) async throws -> [SearchResult] {
-    let searchResponse = try await router.request(
+  func search(of query: String) -> AnyPublisher<[SearchResult], Error> {
+    return router.request(
       with: SearchEndpoint.searchApp(query: query),
       type: SearchResponse.self
     )
-
-    return searchResponse.results
+    .map { $0.results }
+    .eraseToAnyPublisher()
   }
 }

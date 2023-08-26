@@ -10,7 +10,7 @@ import SwiftUI
 struct MainTabView: View {
   var body: some View {
     TabView {
-      ForEach(Tab.allCases, id: \.self) { tab in
+      ForEach(MainTab.allCases, id: \.self) { tab in
         tab.view
           .tabItem {
             tab.image

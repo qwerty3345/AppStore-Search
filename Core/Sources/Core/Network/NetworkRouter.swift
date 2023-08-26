@@ -6,12 +6,13 @@
 //
 
 import Foundation
+import Combine
 
 public protocol NetworkRouterProtocol: AnyObject {
-  func request<T: Decodable>(with endPoint: EndPointType, type: T.Type) async throws -> T
+  func request<T: Decodable>(with endPoint: EndPointType, type: T.Type) -> AnyPublisher<T, Error>
 }
 
-/// Concurrency 를 활용한 Network Router
+/// Combine 을 활용한 Network Router
 public final class NetworkRouter: NetworkRouterProtocol {
 
   // MARK: - Properties
@@ -27,24 +28,23 @@ public final class NetworkRouter: NetworkRouterProtocol {
 
   // MARK: - Public Methods
 
-  public func request<T: Decodable>(with endPoint: EndPointType, type: T.Type) async throws -> T {
-    let urlRequest = try endPoint.buildURLRequest()
-    let (data, response) = try await session.data(for: urlRequest, delegate: nil)
+  public func request<T: Decodable>(with endPoint: EndPointType, type: T.Type) -> AnyPublisher<T, Error> {
+    let urlRequest = endPoint.buildURLRequest()
 
-    guard let httpResponse = response as? HTTPURLResponse,
-          200..<300 ~= httpResponse.statusCode else { throw NetworkError.invalidStatusCode }
-
-    let decodedData = try decoder.decode(T.self, from: data)
-
-    return decodedData
+    return requestData(with: urlRequest.url!)
+      .decode(type: T.self, decoder: decoder)
+      .eraseToAnyPublisher()
   }
 
-  public func requestData(with url: URL) async throws -> Data {
-    let (data, response) = try await session.data(from: url, delegate: nil)
-
-    guard let httpResponse = response as? HTTPURLResponse,
-          200..<300 ~= httpResponse.statusCode else { throw NetworkError.invalidStatusCode }
-
-    return data
+  public func requestData(with url: URL) -> AnyPublisher<Data, Error> {
+    return session.dataTaskPublisher(for: url)
+      .tryMap { data, response in
+        guard let httpResponse = response as? HTTPURLResponse,
+              200..<300 ~= httpResponse.statusCode else {
+          throw NetworkError.invalidStatusCode
+        }
+        return data
+      }
+      .eraseToAnyPublisher()
   }
 }
