@@ -6,22 +6,38 @@
 //
 
 import SwiftUI
+import Core
 
 struct SearchResultView: View {
   let results: [SearchResult]
+  @EnvironmentObject var store: StoreOf<SearchReducer>
 
   var body: some View {
-    // TODO: 검색 결과가 없을 때 나타내기
-    List(results) { result in
-      VStack {
-        header(with: result)
-        screenShotView(with: .init(from: result))
+    List {
+      ForEach(results) { result in
+        VStack {
+          header(with: result)
+          screenShotView(with: .init(from: result))
+        }
+        .overlay( // 네비게이션 링크의 ">" 를 지우기 위해 overlay로 처리
+          NavigationLink(value: result, label: {})
+            .opacity(0.0)
+        )
+        .listRowSeparator(.hidden)
       }
-      .overlay( // 네비게이션 링크의 ">" 를 지우기 위해 overlay로 처리
-        NavigationLink(value: result, label: {})
-          .opacity(0.0)
-      )
-      .listRowSeparator(.hidden)
+
+      if !results.isEmpty && !store.state.isLimit {
+        HStack {
+          Spacer()
+          ProgressView()
+            .id(UUID()) // 여러번 페이징 후 사라지는 현상 해결
+            .progressViewStyle(.circular)
+            .onAppear {
+              store.dispatch(.loadMore)
+            }
+          Spacer()
+        }
+      }
     }
     .listStyle(.plain)
   }
@@ -66,7 +82,7 @@ struct SearchResultView: View {
       HStack(spacing: 8) {
         let ratio = screenShots.mode.ratio
 
-        let shortSideSize = UIScreen.main.bounds.width / 3 - 16
+        let shortSideSize = UIScreen.main.bounds.width / 3 - 20
         let longSideSize = isLongWidth
         ? shortSideSize * ratio
         : shortSideSize / ratio
@@ -95,7 +111,15 @@ struct SearchResultView: View {
 struct SearchResultView_Previews: PreviewProvider {
   static var previews: some View {
     SearchResultView(
-      results: SearchResponse.mock.results
+      results: Array(SearchResponse.mock.results.prefix(3))
+    )
+    .environmentObject(
+      Store(reducer: SearchReducer(
+        searchService: SearchService(
+          router: NetworkRouter()
+        ),
+        historyService: HistoryService()
+      ))
     )
   }
 }
