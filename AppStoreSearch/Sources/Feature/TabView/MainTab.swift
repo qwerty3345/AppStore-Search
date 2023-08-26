@@ -49,6 +49,9 @@ enum Tab: CaseIterable {
       ),
       historyService: HistoryService()
     )
+    .environmentObject(
+      Store<SearchState, SearchAction>(initialState: .init(), reducer: searchReducer)
+    )
     }
   }
 
