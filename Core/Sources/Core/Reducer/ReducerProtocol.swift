@@ -12,12 +12,18 @@ public protocol ReducerProtocol {
   associatedtype State
   associatedtype Action
 
-  /// 다른 액션을 트리거하는 Side-effect
-  ///
-  /// 비동기 로직은 해당 Effect로 처리
-  typealias Effect = AnyPublisher<Action, Never>
+  typealias Effect = EffectType<Action>
 
   var initialState: State { get }
 
   func reduce(state: inout State, action: Action) -> Effect
+}
+
+/// 다른 액션을 트리거하는 Side-effect
+///
+/// 비동기 로직은 해당 Effect로 처리
+public enum EffectType<Action> {
+  case publisher(AnyPublisher<Action, Never>)
+  case task(Task<Action, Never>)
+  case none
 }
