@@ -36,8 +36,6 @@ final class SearchReducer: ReducerProtocol {
   let searchService: SearchServiceProtocol
   let historyService: HistoryServiceProtocol
 
-  private var cancellables = Set<AnyCancellable>()
-
   // MARK: - Initialization
 
   init(
@@ -63,8 +61,11 @@ final class SearchReducer: ReducerProtocol {
       }
 
     case let .search(keyword: keyword):
+      guard state.showingState != .loading else { break }
+
       historyService.save(history: keyword)
       state.histories = historyService.fetchHistories()
+      state.showingState = .loading
 
       return .publisher(
         searchService.search(of: keyword)
@@ -78,6 +79,11 @@ final class SearchReducer: ReducerProtocol {
       )
 
     case let .fetchComplete(results: results):
+      guard !results.isEmpty else {
+        state.showingState = .showingEmpty
+        break
+      }
+
       state.searchResults = results
       state.showingState = .showingResult
 
@@ -102,5 +108,6 @@ extension SearchReducer.State {
     case loading
     case showingError
     case showingResult
+    case showingEmpty
   }
 }

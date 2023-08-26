@@ -40,6 +40,7 @@ struct SearchView: View {
     .onAppear {
       store.dispatch(.onAppear)
     }
+    .animation(.easeInOut, value: store.state.showingState)
   }
 
   @ViewBuilder
@@ -52,9 +53,12 @@ struct SearchView: View {
         results: store.state.searchResults
       )
     case .loading:
-      EmptyView()
+      ProgressView()
+        .progressViewStyle(.circular)
     case .showingError:
-      EmptyView()
+      errorStateView
+    case .showingEmpty:
+      emptyStateView
     }
   }
 
@@ -99,6 +103,34 @@ struct SearchView: View {
       }
     }
     .listStyle(.plain)
+  }
+
+  private func stateView(text: String, imageName: String) -> some View {
+    VStack {
+      Image(systemName: imageName)
+        .resizable()
+        .frame(width: 80, height: 80)
+        .padding(.bottom)
+
+      Text(text)
+        .multilineTextAlignment(.center)
+        .font(.title2)
+        .fontWeight(.bold)
+    }
+  }
+
+  private var errorStateView: some View {
+    stateView(
+      text: "에러가 발생했어요.",
+      imageName: "xmark.app"
+    )
+  }
+
+  private var emptyStateView: some View {
+    stateView(
+      text: "결과값이 없어요.\n다른 검색어로 검색해주세요.",
+      imageName: "nosign.app"
+    )
   }
 }
 
