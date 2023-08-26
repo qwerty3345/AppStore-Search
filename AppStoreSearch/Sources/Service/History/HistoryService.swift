@@ -32,13 +32,13 @@ final class HistoryService: HistoryServiceProtocol {
   func save(history: String) {
     if histories.count >= maxCount {
       let numberOfDeletion = histories.count - maxCount + 1
-      histories.removeFirst(numberOfDeletion)
+      histories.removeLast(numberOfDeletion)
     }
 
     if let existingIndex = histories.firstIndex(of: history) {
       histories.remove(at: existingIndex)
     }
 
-    histories.append(history)
+    histories.insert(history, at: 0)
   }
 }
