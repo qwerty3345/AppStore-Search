@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SearchResultView: View {
-  @Binding var results: [SearchResult]
+  let results: [SearchResult]
 
   var body: some View {
     // TODO: 검색 결과가 없을 때 나타내기
@@ -95,7 +95,7 @@ struct SearchResultView: View {
 struct SearchResultView_Previews: PreviewProvider {
   static var previews: some View {
     SearchResultView(
-      results: .constant(SearchResponse.mock.results)
+      results: SearchResponse.mock.results
     )
   }
 }

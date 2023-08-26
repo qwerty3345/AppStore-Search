@@ -1,5 +1,5 @@
 //
-//  Tab.swift
+//  MainTab.swift
 //  AppStoreSearch
 //
 //  Created by Mason Kim on 2023/08/24.
@@ -8,7 +8,7 @@
 import SwiftUI
 import Core
 
-enum Tab: CaseIterable {
+enum MainTab: CaseIterable {
   case today
   case game
   case app
@@ -42,15 +42,15 @@ enum Tab: CaseIterable {
     case .game: placeholderView
     case .app: placeholderView
     case .arcade: placeholderView
-    case .search: SearchView(
-      // TODO: Service, Router를 주입하는 Container 구현 _ 종속성 분리
-      searchService: SearchService(
-        router: NetworkRouter()
-      ),
-      historyService: HistoryService()
-    )
+    case .search: SearchView()
     .environmentObject(
-      Store<SearchState, SearchAction>(initialState: .init(), reducer: searchReducer)
+      // TODO: Service, Router를 주입하는 Container 구현 _ 종속성 분리
+      Store(reducer: SearchReducer(
+        searchService: SearchService(
+          router: NetworkRouter()
+        ),
+        historyService: HistoryService()
+      ))
     )
     }
   }
