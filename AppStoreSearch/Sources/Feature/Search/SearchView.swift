@@ -21,11 +21,10 @@ struct SearchView: View {
     }
     .searchable(
       text:
-        Binding {
-          store.state.searchText
-        } set: { text in
-          store.dispatch(.change(searchText: text))
-        },
+        Binding(
+          get: { store.state.searchText },
+          set: { store.dispatch(.change(searchText: $0)) }
+        ),
       placement: .navigationBarDrawer(displayMode: .always),
       prompt: "App Store"
     )
