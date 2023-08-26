@@ -14,17 +14,24 @@ final class SearchReducer: ReducerProtocol {
   // MARK: - State, Action
 
   struct State {
+    var searchText: String = ""
+    var countLimit: Int = searchCountLimitUnit
     var showingState: ShowingState = .searching
     var searchResults: [SearchResult] = []
     var suggestions: [String] = []
     var histories: [String] = []
+
+    var isLimit: Bool {
+      countLimit >= searchCountMaxLimit
+    }
   }
 
   enum Action {
     case onAppear
-    case change(keyword: String)
-    case search(keyword: String)
-    case select(suggestion: String)
+    case change(searchText: String)
+    case search
+    case selectToSearch(text: String)
+    case loadMore
     case fetchComplete(results: [SearchResult])
     case fetchError
   }
@@ -35,6 +42,9 @@ final class SearchReducer: ReducerProtocol {
 
   let searchService: SearchServiceProtocol
   let historyService: HistoryServiceProtocol
+
+  static let searchCountLimitUnit: Int = 20
+  static let searchCountMaxLimit: Int = 200
 
   // MARK: - Initialization
 
@@ -53,51 +63,80 @@ final class SearchReducer: ReducerProtocol {
     case .onAppear:
       state.histories = historyService.fetchHistories()
 
-    case let .change(keyword: keyword):
-      state.showingState = .searching
+    case let .change(searchText: searchText):
+      changeTextAction(&state, searchText: searchText)
 
-      state.suggestions = state.histories.filter {
-        $0.contains(keyword)
+    case .search:
+      if let effect = searchAction(&state) {
+        return effect
       }
 
-    case let .search(keyword: keyword):
-      guard state.showingState != .loading else { break }
-
-      historyService.save(history: keyword)
-      state.histories = historyService.fetchHistories()
-      state.showingState = .loading
-
-      return .publisher(
-        searchService.search(of: keyword)
-          .map { results in
-            Action.fetchComplete(results: results)
-          }
-          .catch { error in
-            Just(Action.fetchError)
-          }
-          .eraseToAnyPublisher()
-      )
+    case .loadMore:
+      guard state.countLimit < Self.searchCountMaxLimit else { break }
+      return searchServiceEffect(state)
 
     case let .fetchComplete(results: results):
-      guard !results.isEmpty else {
-        state.showingState = .showingEmpty
-        break
-      }
+      fetchCompleteAction(&state, results: results)
 
-      state.searchResults = results
-      state.showingState = .showingResult
-
-    case let .select(suggestion: suggestion):
+    case let .selectToSearch(text: text):
+      state.searchText = text
       return .publisher(
-        Just(.search(keyword: suggestion))
-          .eraseToAnyPublisher()
+        Just(.search).eraseToAnyPublisher()
       )
 
-    default:
-      break
+    case .fetchError:
+      state.showingState = .showingError
     }
     
     return .none
+  }
+
+  private func changeTextAction(_ state: inout State, searchText: String) {
+    state.searchText = searchText
+    state.showingState = .searching
+    state.searchResults = []
+    state.countLimit = Self.searchCountLimitUnit
+
+    state.suggestions = state.histories.filter {
+      $0.contains(searchText)
+    }
+  }
+
+  private func searchAction(_ state: inout State) -> Effect? {
+    guard state.showingState != .loading,
+          !state.searchText.isEmpty else { return nil }
+    let keyword = state.searchText
+
+    historyService.save(history: keyword)
+    state.histories = historyService.fetchHistories()
+    state.showingState = .loading
+
+    return searchServiceEffect(state)
+  }
+
+  private func searchServiceEffect(_ state: State) -> Effect {
+    let keyword = state.searchText
+    return .publisher(
+      searchService.search(of: keyword, countLimit: state.countLimit)
+        .map { results in
+          Action.fetchComplete(results: results)
+        }
+        .catch { error in
+          Just(Action.fetchError)
+        }
+        .eraseToAnyPublisher()
+    )
+  }
+
+  private func fetchCompleteAction(_ state: inout State, results: [SearchResult]) {
+    guard !results.isEmpty else {
+      state.showingState = .showingEmpty
+      return
+    }
+
+    state.countLimit += Self.searchCountLimitUnit
+    state.searchResults = results
+    state.showingState = .showingResult
   }
 }
 
