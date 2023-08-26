@@ -350,8 +350,8 @@
 			isa = PBXGroup;
 			children = (
 				B4C0A7452A99D1C900F4DF67 /* SearchCore.swift */,
-				B4860AA72A98F3980008EFBE /* SearchResultView.swift */,
 				B4860AA62A98F3980008EFBE /* SearchView.swift */,
+				B4860AA72A98F3980008EFBE /* SearchResultView.swift */,
 				B4860AAB2A98F3980008EFBE /* Detail */,
 			);
 			path = Search;

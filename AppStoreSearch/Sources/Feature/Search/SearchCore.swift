@@ -14,6 +14,7 @@ final class SearchReducer: ReducerProtocol {
   // MARK: - State, Action
 
   struct State {
+    var searchText: String = ""
     var showingState: ShowingState = .searching
     var searchResults: [SearchResult] = []
     var suggestions: [String] = []
@@ -22,11 +23,12 @@ final class SearchReducer: ReducerProtocol {
 
   enum Action {
     case onAppear
-    case change(keyword: String)
-    case search(keyword: String)
-    case select(suggestion: String)
+    case change(searchText: String)
+    case search
+    case selectToSearch(text: String)
     case fetchComplete(results: [SearchResult])
     case fetchError
+    case pullToRefresh
   }
 
   // MARK: - Properties
@@ -53,15 +55,17 @@ final class SearchReducer: ReducerProtocol {
     case .onAppear:
       state.histories = historyService.fetchHistories()
 
-    case let .change(keyword: keyword):
+    case let .change(searchText: searchText):
+      state.searchText = searchText
       state.showingState = .searching
 
       state.suggestions = state.histories.filter {
-        $0.contains(keyword)
+        $0.contains(searchText)
       }
 
-    case let .search(keyword: keyword):
+    case .search:
       guard state.showingState != .loading else { break }
+      let keyword = state.searchText
 
       historyService.save(history: keyword)
       state.histories = historyService.fetchHistories()

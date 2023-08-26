@@ -52,11 +52,11 @@ public final class Store<State, Action>: ObservableObject {
   private func dispatch(_ state: inout State, _ action: Action) {
     let effect = reducer.reduce(state: &state, action: action)
 
+    // effect에 의해 트리거 된 새로운 액션을 비동기적으로 실행 (dispatch)
     switch effect {
     case let .publisher(publisher):
       publisher
         .receive(on: DispatchQueue.main)
-      // effect에 의해 트리거 된 새로운 액션을 실행함 (dispatch)
         .sink(receiveValue: dispatch)
         .store(in: &cancellables)
 

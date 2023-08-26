@@ -12,7 +12,7 @@ struct AppDetailView: View {
   @State private var shareItem: ShareItem?
 
   var body: some View {
-    ScrollView {
+    ScrollView(showsIndicators: false) {
       VStack {
         Group {
           DetailHeaderSection(

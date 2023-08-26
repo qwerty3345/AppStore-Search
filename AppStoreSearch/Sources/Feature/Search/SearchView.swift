@@ -9,8 +9,6 @@ import SwiftUI
 import Core
 
 struct SearchView: View {
-  @State private var searchText = ""
-
   @EnvironmentObject var store: StoreOf<SearchReducer>
 
   var body: some View {
@@ -22,7 +20,12 @@ struct SearchView: View {
         }
     }
     .searchable(
-      text: $searchText,
+      text:
+        Binding {
+          store.state.searchText
+        } set: { text in
+          store.dispatch(.change(searchText: text))
+        },
       placement: .navigationBarDrawer(displayMode: .always),
       prompt: "App Store"
     )
@@ -32,10 +35,7 @@ struct SearchView: View {
       }
     }
     .onSubmit(of: .search) {
-      store.dispatch(.search(keyword: searchText))
-    }
-    .onChange(of: searchText) { searchText in
-      store.dispatch(.change(keyword: searchText))
+      store.dispatch(.search)
     }
     .onAppear {
       store.dispatch(.onAppear)
@@ -66,8 +66,7 @@ struct SearchView: View {
     Section {
       List(store.state.histories, id: \.self) { data in
         Button {
-          searchText = data
-          store.dispatch(.search(keyword: data))
+          store.dispatch(.selectToSearch(text: data))
         } label: {
           Text(data)
             .foregroundColor(.blue)
@@ -99,7 +98,7 @@ struct SearchView: View {
         Text(suggestion)
       }
       .onTapGesture {
-        store.dispatch(.select(suggestion: suggestion))
+        store.dispatch(.selectToSearch(text: suggestion))
       }
     }
     .listStyle(.plain)
