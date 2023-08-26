@@ -10,7 +10,7 @@ import Core
 
 enum SearchEndpoint {
   /// 앱 검색
-  case searchApp(query: String)
+  case searchApp(query: String, countLimit: Int)
 }
 
 // MARK: - EndPointType
@@ -30,11 +30,12 @@ extension SearchEndpoint: EndPointType {
 
   var task: HTTPTask {
     switch self {
-    case let .searchApp(query: query):
+    case let .searchApp(query: query, countLimit: countLimit):
       let parameters: Parameters = [
         "term": query,
         "media": "software",
-        "country": "KR"
+        "country": "KR",
+        "limit": "\(countLimit)"
       ]
       return .requestParameters(parameters)
     }

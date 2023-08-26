@@ -10,7 +10,8 @@ import Core
 import Combine
 
 protocol SearchServiceProtocol {
-  func search(of query: String) -> AnyPublisher<[SearchResult], Error>
+  /// countLimit 최대 200
+  func search(of query: String, countLimit: Int) -> AnyPublisher<[SearchResult], Error>
 }
 
 struct SearchService: SearchServiceProtocol {
@@ -27,9 +28,9 @@ struct SearchService: SearchServiceProtocol {
 
   // MARK: - Public Methods
 
-  func search(of query: String) -> AnyPublisher<[SearchResult], Error> {
+  func search(of query: String, countLimit: Int) -> AnyPublisher<[SearchResult], Error> {
     return router.request(
-      with: SearchEndpoint.searchApp(query: query),
+      with: SearchEndpoint.searchApp(query: query, countLimit: min(countLimit, 200)),
       type: SearchResponse.self
     )
     .map { $0.results }
