@@ -41,6 +41,7 @@ struct SearchView: View {
       store.dispatch(.onAppear)
     }
     .animation(.easeInOut, value: store.state.showingState)
+    .animation(.easeInOut, value: store.state.searchResults)
   }
 
   @ViewBuilder

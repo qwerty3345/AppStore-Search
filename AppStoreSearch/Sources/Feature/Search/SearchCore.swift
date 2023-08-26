@@ -28,7 +28,6 @@ final class SearchReducer: ReducerProtocol {
     case selectToSearch(text: String)
     case fetchComplete(results: [SearchResult])
     case fetchError
-    case pullToRefresh
   }
 
   // MARK: - Properties
@@ -56,52 +55,68 @@ final class SearchReducer: ReducerProtocol {
       state.histories = historyService.fetchHistories()
 
     case let .change(searchText: searchText):
-      state.searchText = searchText
-      state.showingState = .searching
-
-      state.suggestions = state.histories.filter {
-        $0.contains(searchText)
-      }
+      changeTextAction(&state, searchText: searchText)
 
     case .search:
-      guard state.showingState != .loading else { break }
-      let keyword = state.searchText
-
-      historyService.save(history: keyword)
-      state.histories = historyService.fetchHistories()
-      state.showingState = .loading
-
-      return .publisher(
-        searchService.search(of: keyword)
-          .map { results in
-            Action.fetchComplete(results: results)
-          }
-          .catch { error in
-            Just(Action.fetchError)
-          }
-          .eraseToAnyPublisher()
-      )
-
-    case let .fetchComplete(results: results):
-      guard !results.isEmpty else {
-        state.showingState = .showingEmpty
-        break
+      if let effect = searchAction(&state) {
+        return effect
       }
 
-      state.searchResults = results
-      state.showingState = .showingResult
+    case let .fetchComplete(results: results):
+      fetchCompleteAction(&state, results: results)
 
-    case let .select(suggestion: suggestion):
+    case let .selectToSearch(text: text):
+      state.searchText = text
       return .publisher(
-        Just(.search(keyword: suggestion))
-          .eraseToAnyPublisher()
+        Just(.search).eraseToAnyPublisher()
       )
 
-    default:
-      break
+    case .fetchError:
+      state.showingState = .showingError
     }
     
     return .none
+  }
+
+  private func changeTextAction(_ state: inout State, searchText: String) {
+    state.searchText = searchText
+    state.showingState = .searching
+    state.searchResults = []
+
+    state.suggestions = state.histories.filter {
+      $0.contains(searchText)
+    }
+  }
+
+  private func searchAction(_ state: inout State) -> Effect? {
+    guard state.showingState != .loading,
+          !state.searchText.isEmpty else { return nil }
+    let keyword = state.searchText
+
+    historyService.save(history: keyword)
+    state.histories = historyService.fetchHistories()
+    state.showingState = .loading
+
+    return .publisher(
+      searchService.search(of: keyword)
+        .map { results in
+          Action.fetchComplete(results: results)
+        }
+        .catch { error in
+          Just(Action.fetchError)
+        }
+        .eraseToAnyPublisher()
+    )
+  }
+
+  private func fetchCompleteAction(_ state: inout State, results: [SearchResult]) {
+    guard !results.isEmpty else {
+      state.showingState = .showingEmpty
+      return
+    }
+
+    state.searchResults = results
+    state.showingState = .showingResult
   }
 }
 
