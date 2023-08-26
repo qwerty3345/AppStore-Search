@@ -7,14 +7,16 @@
 
 import UIKit
 import Core
+import Combine
 
 enum RemoteImageServiceError: Error {
+  case failToFetchImage
   case failToCreateImage
 }
 
 /// `RemoteImage` 를 위한 이미지 다운로드, 캐싱 Service
 final class RemoteImageService: ObservableObject {
-  private var downloadTask: Task<Void, Error>?
+  private var cancellable: AnyCancellable?
 
   private let cacheManager = ImageCacheManager.shared
   private let router = NetworkRouter()
@@ -26,9 +28,8 @@ final class RemoteImageService: ObservableObject {
     }
   }
 
-  @MainActor
   func fetchImage(with url: URL?) {
-    downloadTask?.cancel()
+    cancellable?.cancel()
 
     guard let url else {
       state = .error(NetworkError.invalidURL)
@@ -40,20 +41,20 @@ final class RemoteImageService: ObservableObject {
       return
     }
 
-    downloadTask = Task {
-      do {
-        let data = try await router.requestData(with: url)
-        guard let image = UIImage(data: data) else {
-          throw RemoteImageServiceError.failToCreateImage
+    cancellable = router.requestData(with: url)
+      .receive(on: DispatchQueue.main)
+      .map { UIImage(data: $0) }
+      .map { image -> RemoteImageState in
+        if let image {
+          return .image(image)
+        } else {
+          return .error(RemoteImageServiceError.failToCreateImage)
         }
-
-        cacheManager.store(image, for: url)
-
-        state = .image(image)
-      } catch {
-        state = .error(error)
       }
-    }
+      .replaceError(with: RemoteImageState.error(RemoteImageServiceError.failToFetchImage))
+      .sink { [weak self] state in
+        self?.state = state
+      }
   }
 }
 
