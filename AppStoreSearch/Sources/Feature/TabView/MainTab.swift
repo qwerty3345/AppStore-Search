@@ -43,15 +43,9 @@ enum MainTab: CaseIterable {
     case .app: placeholderView
     case .arcade: placeholderView
     case .search: SearchView()
-    .environmentObject(
-      // TODO: Service, Router를 주입하는 Container 구현 _ 종속성 분리
-      Store(reducer: SearchReducer(
-        searchService: SearchService(
-          router: NetworkRouter()
-        ),
-        historyService: HistoryService()
-      ))
-    )
+        .environmentObject(
+          Store(reducer: SearchReducer())
+        )
     }
   }
 
