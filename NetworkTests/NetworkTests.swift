@@ -8,30 +8,33 @@
 import XCTest
 @testable import AppStoreSearch
 import Core
+import Combine
 
 final class NetworkRouterTests: XCTestCase {
 
-  var sut: NetworkRouter!
+  @Inject var sut: NetworkRouter
+  private var cancellable: AnyCancellable!
 
   override func setUpWithError() throws {
-    sut = NetworkRouter(
-      session:
-        MockURLSession(
-          successMockData: SearchResponse.mockRawData
-        )
-    )
+    AppEnvironment().registerMockDependencies()
   }
 
   override func tearDownWithError() throws {
-    sut = nil
+    cancellable.cancel()
+    cancellable = nil
   }
 
-  func test_Search_결과가_비어있지_않다() async throws {
-    let searchResponse = try await sut.request(
-      with: SearchEndpoint.searchApp(query: "health"),
-      type: SearchResponse.self
-    )
+  func test_Search_결과가_비어있지_않다() throws {
+    let expectation = XCTestExpectation()
 
-    XCTAssertFalse(searchResponse.results.isEmpty)
+    cancellable = sut.request(
+      with: SearchEndpoint.searchApp(query: "health", countLimit: 20),
+      type: SearchResponse.self
+    ).sink { error in
+      XCTFail("에러 발생")
+    } receiveValue: { response in
+      expectation.fulfill()
+      XCTAssertFalse(response.results.isEmpty)
+    }
   }
 }

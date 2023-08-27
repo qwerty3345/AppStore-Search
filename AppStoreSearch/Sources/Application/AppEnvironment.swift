@@ -23,8 +23,11 @@ struct AppEnvironment {
     container.register(type: SearchReducer.self, SearchReducer())
   }
 
-  private func registerMockNetworkDependencies() {
+  /// 유닛테스트를 위한 Mock 형태의 Session, Service들을 주입
+  func registerMockDependencies() {
     let mockURLSession = MockURLSession(successMockData: SearchResponse.mockRawData)
     container.register(type: NetworkRouterProtocol.self, NetworkRouter(session: mockURLSession))
+
+    // TODO: Mock Service들 주입
   }
 }
