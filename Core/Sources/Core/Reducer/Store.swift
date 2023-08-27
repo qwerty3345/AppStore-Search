@@ -11,6 +11,7 @@ import Combine
 /// Reducer 타입을 통해 Store 를 쉽게 타입추론 / 생성 하기 위한 typealias
 public typealias StoreOf<R: ReducerProtocol> = Store<R.State, R.Action>
 
+/// Reducer 를 관리하는 Store
 public final class Store<State, Action>: ObservableObject {
 
   // MARK: - Properties
