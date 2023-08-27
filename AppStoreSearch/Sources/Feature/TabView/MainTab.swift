@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum MainTab: CaseIterable {
+enum MainTab: Int, CaseIterable {
   case today
   case game
   case app
