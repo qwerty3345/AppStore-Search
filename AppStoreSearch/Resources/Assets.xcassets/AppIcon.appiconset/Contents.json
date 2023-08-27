@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "app-store.jpg",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
