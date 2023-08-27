@@ -9,7 +9,12 @@ import SwiftUI
 import Core
 
 struct SearchView: View {
+
+  // MARK: - Properties
+
   @EnvironmentObject var store: StoreOf<SearchReducer>
+
+  // MARK: - Body
 
   var body: some View {
     NavigationStack {
@@ -43,20 +48,23 @@ struct SearchView: View {
     .animation(.easeInOut, value: store.state.searchResults)
   }
 
+  // MARK: - Private Methods
+
   @ViewBuilder
   private var showingList: some View {
     switch store.state.showingState {
     case .searching:
       recentSearchList
+
     case .showingResult:
-      SearchResultView(
-        results: store.state.searchResults
-      )
+      SearchResultView(results: store.state.searchResults)
+
     case .loading:
-      ProgressView()
-        .progressViewStyle(.circular)
+      ProgressView().progressViewStyle(.circular)
+
     case .showingError:
       errorStateView
+
     case .showingEmpty:
       emptyStateView
     }
@@ -132,6 +140,8 @@ struct SearchView: View {
     )
   }
 }
+
+// MARK: - Preview
 
 struct SearchView_Previews: PreviewProvider {
   static var previews: some View {

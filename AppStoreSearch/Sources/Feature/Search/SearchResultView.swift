@@ -9,8 +9,13 @@ import SwiftUI
 import Core
 
 struct SearchResultView: View {
+
+  // MARK: - Properties
+
   let results: [SearchResult]
   @EnvironmentObject var store: StoreOf<SearchReducer>
+
+  // MARK: - Body
 
   var body: some View {
     List {
@@ -41,6 +46,8 @@ struct SearchResultView: View {
     }
     .listStyle(.plain)
   }
+
+  // MARK: - Private Methods
 
   private func header(with result: SearchResult) -> some View {
     HStack {
@@ -107,6 +114,8 @@ struct SearchResultView: View {
     .scrollDisabled(!isLongWidth)
   }
 }
+
+// MARK: - Preview
 
 struct SearchResultView_Previews: PreviewProvider {
   static var previews: some View {

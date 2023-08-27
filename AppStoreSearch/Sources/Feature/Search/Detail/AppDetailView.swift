@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct AppDetailView: View {
+
+  // MARK: - Properties
+
   let result: SearchResult
   @State private var shareItem: ShareItem?
+
+  // MARK: - Body
 
   var body: some View {
     ScrollView(showsIndicators: false) {
@@ -62,6 +67,8 @@ struct AppDetailView: View {
     }
   }
 }
+
+// MARK: - Preview
 
 struct AppDetailView_Previews: PreviewProvider {
   static var previews: some View {

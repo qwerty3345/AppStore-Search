@@ -81,6 +81,8 @@ final class SearchReducer: ReducerProtocol {
     return .none
   }
 
+  // MARK: - Private Methods
+
   private func changeTextAction(_ state: inout State, searchText: String) {
     state.searchText = searchText
     state.showingState = .searching
@@ -130,6 +132,7 @@ final class SearchReducer: ReducerProtocol {
   }
 }
 
+// MARK: - ShowingState
 
 extension SearchReducer.State {
   enum ShowingState {
