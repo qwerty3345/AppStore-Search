@@ -8,28 +8,35 @@
 import SwiftUI
 
 struct DetailHorizontalInfoSection: View {
+
+  // MARK: - Properties
+
   let model: DetailHorizontalInfoSectionModel
 
-  var divider: some View {
-    Divider().padding(.vertical)
-  }
+  // MARK: - Body
 
   var body: some View {
     ScrollView(.horizontal, showsIndicators: false) {
       HStack {
         ratingInfoView
-        divider
+        infoDivider
 
         ageInfoView
-        divider
+        infoDivider
 
         categoryInfoView
-        divider
+        infoDivider
 
         developerInfoView
       }
       .frame(height: 100, alignment: .center)
     }
+  }
+
+  // MARK: - Private
+
+  private var infoDivider: some View {
+    Divider().padding(.vertical)
   }
 
   private var ratingInfoView: some View {

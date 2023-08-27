@@ -15,29 +15,31 @@ struct DetailDescriptionSection: View {
       ExpandableTextView(text: model.description)
         .padding(.bottom)
 
-      Button {
-        // 개발자 정보로 이동
-      } label: {
-        HStack {
-          VStack(alignment: .leading) {
-            Text(model.artistName)
-              .foregroundColor(.accentColor)
-              .font(.callout)
-
-            Text("개발자")
-              .font(.footnote)
-              .foregroundColor(.gray)
-          }
-
-          Spacer()
-
-          Image(systemName: "chevron.forward")
-            .foregroundColor(.gray)
-            .font(.title3)
-        }
+      Button(action: {}) {
+        developerInfoView
       }
     }
     .padding(.horizontal)
+  }
+
+  private var developerInfoView: some View {
+    HStack {
+      VStack(alignment: .leading) {
+        Text(model.artistName)
+          .foregroundColor(.accentColor)
+          .font(.callout)
+
+        Text("개발자")
+          .font(.footnote)
+          .foregroundColor(.gray)
+      }
+
+      Spacer()
+
+      Image(systemName: "chevron.forward")
+        .foregroundColor(.gray)
+        .font(.title3)
+    }
   }
 }
 
