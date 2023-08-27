@@ -8,55 +8,47 @@
 import SwiftUI
 
 struct AppDetailView: View {
-
+  
   // MARK: - Properties
-
+  
   let result: SearchResult
   @State private var shareItem: ShareItem?
-
+  
   // MARK: - Body
-
+  
   var body: some View {
     ScrollView(showsIndicators: false) {
       VStack {
-        Group {
-          DetailHeaderSection(
-            model: .init(from: result),
-            shareItem: $shareItem
-          )
-          .padding(.bottom)
-
-          Divider().padding(.horizontal)
-
-          DetailHorizontalInfoSection(
-            model: .init(from: result)
-          )
-          
-          Divider().padding(.horizontal)
-
-          DetailReleaseNoteSection(
-            model: .init(from: result)
-          )
-
-          Divider().padding(.horizontal)
-        }
-
-        Group {
-          DetailScreenShotSection(
-            screenshots: .init(from: result)
-          )
-
-          DetailDescriptionSection(
-            model: .init(from: result)
-          )
-            .padding(.bottom)
-
-          Divider().padding(.horizontal)
-
-          DetailInformationSection(
-            model: .init(from: result)
-          )
-        }
+        DetailHeaderSection(
+          model: .init(from: result),
+          shareItem: $shareItem
+        )
+        .padding(.bottom)
+        horizontalDivider
+        
+        DetailHorizontalInfoSection(
+          model: .init(from: result)
+        )
+        horizontalDivider
+        
+        DetailReleaseNoteSection(
+          model: .init(from: result)
+        )
+        horizontalDivider
+        
+        DetailScreenShotSection(
+          screenshots: .init(from: result)
+        )
+        
+        DetailDescriptionSection(
+          model: .init(from: result)
+        )
+        .padding(.bottom)
+        horizontalDivider
+        
+        DetailInformationSection(
+          model: .init(from: result)
+        )
       }
     }
     .navigationBarTitle("", displayMode: .inline)
@@ -65,6 +57,12 @@ struct AppDetailView: View {
         text: shareItem.shareText
       )
     }
+  }
+  
+  // MARK: - Private Methods
+  
+  private var horizontalDivider: some View {
+    Divider().padding(.horizontal)
   }
 }
 
