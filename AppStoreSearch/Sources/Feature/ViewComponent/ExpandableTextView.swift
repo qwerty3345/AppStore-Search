@@ -28,7 +28,9 @@ struct ExpandableTextView: View {
       if !isExpanded && isTruncated {
         Text(isTruncated ? " 더 보기" : "")
           .foregroundColor(.accentColor)
-          .background(.white)
+          .background(
+            Color(uiColor: UIColor.systemBackground)
+          )
       }
     }
     .onTapGesture {
