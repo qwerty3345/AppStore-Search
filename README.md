@@ -1,5 +1,5 @@
 # ios-itunes-search
-[Huray Positive] iOS 과제 인터뷰 - iTunes Search
+iOS 과제 인터뷰 - iTunes Search
 
 ![1](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/4fd1492d-86de-45cc-b4df-ebba24ab1e4f)
 
