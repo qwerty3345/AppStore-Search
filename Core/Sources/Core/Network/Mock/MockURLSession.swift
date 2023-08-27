@@ -7,7 +7,6 @@
 
 import Foundation
 
-#if DEBUG
 public final class MockURLSession: URLSessionProtocol {
 
   // MARK: - Properties
@@ -59,4 +58,3 @@ public final class MockURLSession: URLSessionProtocol {
     return urlSession.dataTaskPublisher(for: url)
   }
 }
-#endif

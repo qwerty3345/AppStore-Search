@@ -7,7 +7,6 @@
 
 import Foundation
 
-#if DEBUG
 final class MockURLProtocol: URLProtocol {
 
   typealias RequestHandler = ((URLRequest) -> (Data?, HTTPURLResponse?, Error?))
@@ -45,4 +44,3 @@ final class MockURLProtocol: URLProtocol {
 
   override func stopLoading() { }
 }
-#endif
