@@ -18,13 +18,7 @@ struct SearchService: SearchServiceProtocol {
 
   // MARK: - Properties
 
-  private let router: NetworkRouterProtocol
-
-  // MARK: - Initialization
-
-  init(router: NetworkRouterProtocol) {
-    self.router = router
-  }
+  @Inject private var router: NetworkRouterProtocol
 
   // MARK: - Public Methods
 

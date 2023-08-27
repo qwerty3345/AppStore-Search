@@ -114,12 +114,7 @@ struct SearchResultView_Previews: PreviewProvider {
       results: Array(SearchResponse.mock.results.prefix(3))
     )
     .environmentObject(
-      Store(reducer: SearchReducer(
-        searchService: SearchService(
-          router: NetworkRouter()
-        ),
-        historyService: HistoryService()
-      ))
+      Store(reducer: SearchReducer())
     )
   }
 }

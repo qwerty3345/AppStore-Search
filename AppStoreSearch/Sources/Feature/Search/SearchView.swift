@@ -137,12 +137,7 @@ struct SearchView_Previews: PreviewProvider {
   static var previews: some View {
     SearchView()
       .environmentObject(
-        Store(reducer: SearchReducer(
-          searchService: SearchService(
-            router: NetworkRouter()
-          ),
-          historyService: HistoryService()
-        ))
+        Store(reducer: SearchReducer())
       )
   }
 }

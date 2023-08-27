@@ -40,21 +40,11 @@ final class SearchReducer: ReducerProtocol {
 
   let initialState: State = .init()
 
-  let searchService: SearchServiceProtocol
-  let historyService: HistoryServiceProtocol
+  @Inject private var searchService: SearchServiceProtocol
+  @Inject private var historyService: HistoryServiceProtocol
 
-  static let searchCountLimitUnit: Int = 20
-  static let searchCountMaxLimit: Int = 200
-
-  // MARK: - Initialization
-
-  init(
-    searchService: SearchServiceProtocol,
-    historyService: HistoryServiceProtocol
-  ) {
-    self.searchService = searchService
-    self.historyService = historyService
-  }
+  private static let searchCountLimitUnit: Int = 20
+  private static let searchCountMaxLimit: Int = 200
 
   // MARK: - Public Methods
 

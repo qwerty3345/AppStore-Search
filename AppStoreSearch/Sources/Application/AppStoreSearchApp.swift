@@ -9,6 +9,10 @@ import SwiftUI
 
 @main
 struct ios_itunes_searchApp: App {
+  init() {
+    AppEnvironment().registerDependencies()
+  }
+
   var body: some Scene {
     WindowGroup {
       MainTabView()
