@@ -18,17 +18,12 @@ struct DetailScreenShotSection: View {
         .fontWeight(.bold)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal)
-      
-      let isLongWidth = screenshots.mode == .longWidth
-      let screenWidth = UIScreen.main.bounds.width
-      let width = isLongWidth ? screenWidth * 0.9 : screenWidth * 0.6
-      let height = width / screenshots.mode.ratio
 
       Carousel(
         items: screenshots.urls,
         index: $index,
         spacing: 10,
-        trailingSpace: isLongWidth ? 40 : 140
+        trailingSpace: carouselTrailingSpace
       ) {
         RemoteImage(url: $0) { image in
           image
@@ -36,11 +31,29 @@ struct DetailScreenShotSection: View {
             .scaledToFit()
             .cornerRadius(8)
         }
-        .frame(width: width, height: height)
+        .frame(width: carouselWidth, height: carouselHeight)
       }
-      .frame(height: height)
+      .frame(height: carouselHeight)
       .padding(.bottom)
     }
+  }
+
+  // MARK: - Private
+
+  private var isLongWidth: Bool {
+    screenshots.mode == .longWidth
+  }
+
+  private var carouselWidth: CGFloat {
+    isLongWidth ? screenWidth * 0.9 : screenWidth * 0.6
+  }
+
+  private var carouselHeight: CGFloat {
+    carouselWidth / screenshots.mode.ratio
+  }
+
+  private var carouselTrailingSpace: CGFloat {
+    isLongWidth ? 40 : 140
   }
 }
 

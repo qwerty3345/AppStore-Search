@@ -80,7 +80,7 @@ struct SearchResultView: View {
       HStack(spacing: 8) {
         let ratio = screenShots.mode.ratio
 
-        let shortSideSize = UIScreen.main.bounds.width / 3 - 20
+        let shortSideSize = screenWidth / 3 - 20
         let longSideSize = isLongWidth
         ? shortSideSize * ratio
         : shortSideSize / ratio

@@ -92,7 +92,7 @@ struct CarouselViewPreView: View {
   @State var index = 0
   let screenshots = ScreenShots(from: .mock)
   let ratio = ScreenShots(from: .mock).mode.ratio
-  let width = UIScreen.main.bounds.width * 0.7
+  let width = screenWidth * 0.7
 
   var body: some View {
     Carousel(items: screenshots.urls, index: $index) { item in
