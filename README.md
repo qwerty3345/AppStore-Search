@@ -15,6 +15,10 @@ iOS 과제 인터뷰 - iTunes Search
 <img width="1028" alt="image" src="https://github.com/qwerty3345/ios-itunes-search/assets/59835351/49e5be8e-bff2-4976-9a1e-a12242ea37df">
 
 
+🛠️ ### 개발 환경
+- Xcode 14.3
+- Swift 5.8
+
 
 ### 📂 프로젝트 폴더링 구조
 
