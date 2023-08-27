@@ -21,10 +21,14 @@ struct SearchResultView: View {
     List {
       ForEach(results) { result in
         VStack {
-          header(with: result)
-          screenShotView(with: .init(from: result))
+          SearchResultHeaderView(result: result)
+
+          SearchResultScreenShotView(
+            screenShots: .init(from: result)
+          )
         }
-        .overlay( // 네비게이션 링크의 ">" 를 지우기 위해 overlay로 처리
+        .overlay(
+          // 네비게이션 링크의 ">" 를 지우기 위해 overlay로 처리
           NavigationLink(value: result, label: {})
             .opacity(0.0)
         )
@@ -32,24 +36,34 @@ struct SearchResultView: View {
       }
 
       if !results.isEmpty && !store.state.isLimit {
-        HStack {
-          Spacer()
-          ProgressView()
-            .id(UUID()) // 여러번 페이징 후 사라지는 현상 해결
-            .progressViewStyle(.circular)
-            .onAppear {
-              store.dispatch(.loadMore)
-            }
-          Spacer()
-        }
+        bottomProgressView
       }
     }
     .listStyle(.plain)
   }
 
-  // MARK: - Private Methods
+  // MARK: - Private
 
-  private func header(with result: SearchResult) -> some View {
+  private var bottomProgressView: some View {
+    HStack {
+      Spacer()
+      ProgressView()
+        .id(UUID()) // 여러번 페이징 후 사라지는 현상 해결
+        .progressViewStyle(.circular)
+        .onAppear {
+          store.dispatch(.loadMore)
+        }
+      Spacer()
+    }
+  }
+}
+
+// MARK: - SearchResultHeaderView
+
+struct SearchResultHeaderView: View {
+  let result: SearchResult
+
+  var body: some View {
     HStack {
       RemoteImage(url: result.artworkUrl60) { image in
         image
@@ -72,37 +86,61 @@ struct SearchResultView: View {
       DownloadButton(action: {})
     }
   }
+}
 
-  private func screenShotView(with screenShots: ScreenShots) -> some View {
-    let isLongWidth = screenShots.mode == .longWidth
+// MARK: - SearchResultScreenShotView
 
-    return ScrollView(.horizontal, showsIndicators: false) {
+struct SearchResultScreenShotView: View {
+  let screenShots: ScreenShots
+
+  var body: some View {
+    ScrollView(.horizontal, showsIndicators: false) {
       HStack(spacing: 8) {
-        let ratio = screenShots.mode.ratio
-
-        let shortSideSize = screenWidth / 3 - 20
-        let longSideSize = isLongWidth
-        ? shortSideSize * ratio
-        : shortSideSize / ratio
-
-        let width = isLongWidth ? longSideSize : shortSideSize
-        let height = isLongWidth ? shortSideSize : longSideSize
-
         ForEach(screenShots.urls.prefix(3), id: \.self) {
-          RemoteImage(url: $0) { image in
-            image
-              .resizable()
-              .cornerRadius(8)
-              .aspectRatio(contentMode: .fit)
-          } placeHolderView: {
-            RoundedRectangle(cornerRadius: 8)
-              .fill(.gray)
-          }
-          .frame(width: width, height: height)
+          ResultScreenShotImageView(
+            url: $0,
+            width: imageWidth,
+            height: imageHeight
+          )
         }
       }
     }
-    .scrollDisabled(!isLongWidth)
+    .scrollDisabled(!screenShots.isLongWidth)
+  }
+
+  private let shortSideSize = screenWidth / 3 - 20
+
+  private var imageWidth: CGFloat {
+    return screenShots.isLongWidth ?
+    shortSideSize * screenShots.mode.ratio :
+    shortSideSize
+  }
+
+  private var imageHeight: CGFloat {
+    return screenShots.isLongWidth ?
+    shortSideSize :
+    shortSideSize / screenShots.mode.ratio
+  }
+}
+
+// MARK: - ResultScreenShotImageView
+
+struct ResultScreenShotImageView: View {
+  let url: URL
+  let width: CGFloat
+  let height: CGFloat
+
+  var body: some View {
+    RemoteImage(url: url) { image in
+      image
+        .resizable()
+        .cornerRadius(8)
+        .aspectRatio(contentMode: .fit)
+    } placeHolderView: {
+      RoundedRectangle(cornerRadius: 8)
+        .fill(Color.gray)
+    }
+    .frame(width: width, height: height)
   }
 }
 
