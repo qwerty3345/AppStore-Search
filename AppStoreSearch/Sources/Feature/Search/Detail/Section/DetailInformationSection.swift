@@ -18,19 +18,10 @@ struct DetailInformationSection: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.bottom)
 
-      ForEach(DetailInformation.allCases.indices, id: \.self) { index in
-        let information = DetailInformation.allCases[index]
+      ForEach(DetailInformation.allCases, id: \.self) { information in
+        DetailInformationRow(information: information, model: model)
 
-        HStack(alignment: .bottom) {
-          Text(information.title)
-            .font(.callout)
-            .foregroundColor(.gray)
-          Spacer()
-          Text(information.value(from: model))
-            .font(.body)
-        }
-
-        if index != DetailInformation.allCases.count - 1 {
+        if information != DetailInformation.allCases.last {
           Divider()
         }
       }
@@ -38,6 +29,26 @@ struct DetailInformationSection: View {
     .padding(.horizontal)
   }
 }
+
+// MARK: - InformationRow
+
+struct DetailInformationRow: View {
+  let information: DetailInformation
+  let model: DetailInformationSectionModel
+
+  var body: some View {
+    HStack(alignment: .bottom) {
+      Text(information.title)
+        .font(.callout)
+        .foregroundColor(.gray)
+      Spacer()
+      Text(information.value(from: model))
+        .font(.body)
+    }
+  }
+}
+
+// MARK: - DetailInformation
 
 enum DetailInformation: CaseIterable {
   case developer
@@ -65,6 +76,8 @@ enum DetailInformation: CaseIterable {
     }
   }
 }
+
+// MARK: - Preview
 
 struct DetailInformationSection_Previews: PreviewProvider {
   static var previews: some View {

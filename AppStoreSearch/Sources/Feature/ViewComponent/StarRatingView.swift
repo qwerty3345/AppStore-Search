@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// 별점을 나타내는 View (0.0 ~ 5.0)
 struct StarRatingView: View {
   let rating: Double
   let filledStarColor: Color

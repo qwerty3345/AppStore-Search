@@ -13,7 +13,7 @@ struct MainTabView: View {
       ForEach(MainTab.allCases, id: \.self) { tab in
         tab.view
           .tabItem {
-            tab.image
+            Image(systemName: tab.systemImageName)
             Text(tab.title)
           }
       }

@@ -7,7 +7,6 @@
 
 import Foundation
 
-#if DEBUG
 extension SearchResponse {
   static let mockRawData: Data! = {
     let location = Bundle.main.url(forResource: "search_response_mock", withExtension: "json")!
@@ -22,4 +21,3 @@ extension SearchResponse {
 extension SearchResult {
   static let mock = SearchResponse.mock.results.first!
 }
-#endif

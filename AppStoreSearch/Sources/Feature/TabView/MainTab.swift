@@ -5,8 +5,7 @@
 //  Created by Mason Kim on 2023/08/24.
 //
 
-import SwiftUI
-import Core
+import Foundation
 
 enum MainTab: CaseIterable {
   case today
@@ -25,32 +24,14 @@ enum MainTab: CaseIterable {
     }
   }
 
-  var image: Image {
+  var systemImageName: String {
     switch self {
-    case .today: return Image(systemName: "doc.text.image")
-    case .game: return Image(systemName: "gamecontroller")
-    case .app: return Image(systemName: "square.stack.3d.up.fill")
-    case .arcade: return Image(systemName: "figure.play")
-    case .search: return Image(systemName: "magnifyingglass")
+    case .today: return "doc.text.image"
+    case .game: return "gamecontroller"
+    case .app: return "square.stack.3d.up.fill"
+    case .arcade: return "figure.play"
+    case .search: return "magnifyingglass"
     }
   }
 
-  @ViewBuilder
-  var view: some View {
-    switch self {
-    case .today: placeholderView
-    case .game: placeholderView
-    case .app: placeholderView
-    case .arcade: placeholderView
-    case .search: SearchView()
-        .environmentObject(
-          Store(reducer: SearchReducer())
-        )
-    }
-  }
-
-  private var placeholderView: some View {
-    Text("빈 화면입니다.\n검색으로 이동 해 주세요.")
-      .multilineTextAlignment(.center)
-  }
 }

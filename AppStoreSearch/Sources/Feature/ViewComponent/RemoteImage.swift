@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// 이미지 다운로드, 캐싱을 구현한 RemoteImage
 struct RemoteImage<
   ImageView: View,
   PlaceHolderView: View,

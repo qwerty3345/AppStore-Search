@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-
+/// 3줄로 줄이고, "더보기"를 눌러서 확장하는 기능을 구현한 TextView
 struct ExpandableTextView: View {
   let text: String
   let lineLimit = 3

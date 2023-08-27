@@ -26,6 +26,10 @@ extension ScreenShots {
     guard let screenShotURL = urls.first else { return .none }
     return ScreenShotMode(screenShotURL: screenShotURL)
   }
+
+  var isLongWidth: Bool {
+    mode == .longWidth
+  }
 }
 
 enum ScreenShotMode {
