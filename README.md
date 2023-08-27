@@ -2,7 +2,7 @@
 iOS 과제 인터뷰 - iTunes Search
 > 🧑🏻‍💻 과제 수행 기간: 23.08.23 ~ 23.08.27 (5일)
 
-![1](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/4fd1492d-86de-45cc-b4df-ebba24ab1e4f)
+![1](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/29532f51-73e0-4c2e-a2a2-2c1de33f10b0)
 
 <br>
 
@@ -13,7 +13,7 @@ iOS 과제 인터뷰 - iTunes Search
 - MVI
 - SPM
 
-<img width="1028" alt="image" src="https://github.com/qwerty3345/ios-itunes-search/assets/59835351/49e5be8e-bff2-4976-9a1e-a12242ea37df">
+<img width="1028" alt="image" src="https://github.com/qwerty3345/ios-itunes-search/assets/59835351/c492779c-f99d-44fb-8258-8c4418f954d1">
 
 
 ## 🛠️ 개발 환경
@@ -31,7 +31,7 @@ iOS 과제 인터뷰 - iTunes Search
 
 | AppStoreSearch | Core 모듈 |
 | -------- | -------- |
-| ![image](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/d2eb49aa-f036-464c-8839-6cacebc3b5cc) | ![image](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/1d3850a3-e3f7-4864-ba66-4271fa7bf0b0) |
+| ![image](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/c64f612b-7b15-42fc-b201-6bc9cefd3d49) | ![image](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/7692e087-4dec-4655-a22a-bd5f90f06538) |
 
 <br>
 
@@ -42,14 +42,14 @@ iOS 과제 인터뷰 - iTunes Search
 
 | 검색                                                                                                   | 검색어 추천                                                                                                           | 검색결과 (가로이미지)                                                                                 | 무한 스크롤    |
 | ------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | --- |
-| ![검색](https://github.com/qwerty3345/EasyCloset/assets/59835351/354cea6d-cfbc-486d-aabe-78ee346f4428) | ![검색어추천_최근검색](https://github.com/qwerty3345/EasyCloset/assets/59835351/7588599c-3c6c-4832-a5df-547f37e917b4) | ![검색_가로](https://github.com/qwerty3345/EasyCloset/assets/59835351/e8eb3b99-e7a6-42b5-9c9c-853518f17c8f) |  ![무한스크롤](https://github.com/qwerty3345/EasyCloset/assets/59835351/ecf3bf99-e7a9-4bbd-b941-abe32399b937)   |
+| ![검색](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/43ecce4a-0102-45e2-a68f-eedd7d2c91ed) | ![검색어추천_최근검색](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/d45e7422-5e2a-4c93-82ee-9f48cc1caf14) |  ![검색_가로](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/69636ff9-62a9-45b2-a969-181cf7b4220f) |   ![무한스크롤](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/efeeca0f-81e0-4092-b75f-4802d404af4e) |
 
 
 ## 👀 상세보기
 
 | 상세보기 | 상세보기 - 더보기 | 공유기능 | 다크모드 지원 |
 | -------- | -------- | -------- | -------- |
-| ![상세보기](https://github.com/qwerty3345/EasyCloset/assets/59835351/d2158208-9e4c-4ad8-bde1-ade964dbd29e)     | ![상세보기_더보기](https://github.com/qwerty3345/EasyCloset/assets/59835351/4229d837-76cb-4fc4-86f6-a5a87d0ca2b4)     | ![공유기능](https://github.com/qwerty3345/EasyCloset/assets/59835351/272e62c9-748e-4caf-9813-4a1bfde7cf5c)     | ![Simulator Screen Recording - iPhone 14 Pro - 2023-08-27 at 21 48 40](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/8a5c1048-e80f-4f5f-9480-92c2ff72b998)  |
+|  ![상세보기](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/0305ec54-1eed-4892-8387-50cb442611cf)  |    ![상세보기_더보기](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/c1e9930d-f7de-4f44-97f1-e84d270ac9f9) |     ![공유기능](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/b70dd339-b4e6-438a-bc89-9d0099e01e1c) |   ![다크모드](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/7137ec33-8bbd-469a-a949-fcbaaa9a7816) |
 
 <br>
 <br>
@@ -62,30 +62,34 @@ iOS 과제 인터뷰 - iTunes Search
 
 ### 👉 [[Feat] Image 를 다운받고 캐싱하는 서비스, 뷰 구현 (RemoteImage) #11](https://github.com/qwerty3345/ios-itunes-search/pull/11)
 
-![image](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/4a97d4b8-6c93-4cff-b2f3-33dfd687695d)
+![image](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/a7ec8ff5-7535-4570-8693-2bd15023457d)
+
 
 -------
 
 ### 👉 [[Feat] 스크린샷 다양한 크기 대응, Carousel 형태 구현 #13](https://github.com/qwerty3345/ios-itunes-search/pull/13)
 
-![image](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/d3e0ad64-8100-43b3-b673-0f41995ac724)
+![image](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/fc117118-599b-4a54-85ea-2b57e8560efe)
+
 
 -------
 
 ### 👉 [[Refactor] MVI 아키텍쳐 적용 #17](https://github.com/qwerty3345/ios-itunes-search/pull/17)
 
-![image](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/537802e1-245a-4bdb-88ff-a23a33c03179)
+![image](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/43dac7e8-131b-481e-a589-899cd00c522b)
+
 
 -------
 
 ### 👉 [[Refactor] 의존성 주입 DI Container 구현 #19](https://github.com/qwerty3345/ios-itunes-search/pull/19)
 
-![image](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/b8da5642-c0fd-4908-8d10-8d73b5ffd8f9)
+![image](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/4e8cdd66-1ed8-450e-81f1-981b7f1e2d33)
+
 
 -------
 
 ### [✍️ 노션 개발일지](https://iosmason.notion.site/f43e0248888147aba66e2e535db7acd0?pvs=4)
 - 매일 작업 과정을 정리 한 노션입니다.
     - 해당 내용을 바탕으로 **PR을 작성**하였습니다.
+    > ![image](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/ec244e3c-f219-4433-8a11-7c99323fcd6e)
 
-![image](https://github.com/qwerty3345/ios-itunes-search/assets/59835351/7ecf407a-4af6-46b1-9253-614b1521796a)
