@@ -46,6 +46,8 @@
 		B4860AE72A98F3B40008EFBE /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = B4860AE62A98F3B40008EFBE /* Core */; };
 		B4860AFC2A98F4280008EFBE /* NetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4860AFB2A98F4280008EFBE /* NetworkTests.swift */; };
 		B49258D62A9B31D8000983D9 /* MainTab+ChildView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49258D52A9B31D8000983D9 /* MainTab+ChildView.swift */; };
+		B49258D82A9B424B000983D9 /* DownloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49258D72A9B424B000983D9 /* DownloadButton.swift */; };
+		B49258DA2A9B428E000983D9 /* ShareButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49258D92A9B428E000983D9 /* ShareButton.swift */; };
 		B4C0A7462A99D1C900F4DF67 /* SearchCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C0A7452A99D1C900F4DF67 /* SearchCore.swift */; };
 		B4C0A7572A9B0F2300F4DF67 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C0A7562A9B0F2300F4DF67 /* AppEnvironment.swift */; };
 		B4C0A77A2A9B1DDB00F4DF67 /* SearchReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C0A7792A9B1DDB00F4DF67 /* SearchReducerTests.swift */; };
@@ -119,6 +121,8 @@
 		B4860AF92A98F4280008EFBE /* NetworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NetworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4860AFB2A98F4280008EFBE /* NetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTests.swift; sourceTree = "<group>"; };
 		B49258D52A9B31D8000983D9 /* MainTab+ChildView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainTab+ChildView.swift"; sourceTree = "<group>"; };
+		B49258D72A9B424B000983D9 /* DownloadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadButton.swift; sourceTree = "<group>"; };
+		B49258D92A9B428E000983D9 /* ShareButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareButton.swift; sourceTree = "<group>"; };
 		B4C0A7452A99D1C900F4DF67 /* SearchCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCore.swift; sourceTree = "<group>"; };
 		B4C0A7562A9B0F2300F4DF67 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		B4C0A7772A9B1DDA00F4DF67 /* SearchReducerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SearchReducerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -268,6 +272,8 @@
 				B4860AA22A98F3980008EFBE /* ExpandableTextView.swift */,
 				B4860AA12A98F3980008EFBE /* RemoteImage.swift */,
 				B4860AA42A98F3980008EFBE /* StarRatingView.swift */,
+				B49258D72A9B424B000983D9 /* DownloadButton.swift */,
+				B49258D92A9B428E000983D9 /* ShareButton.swift */,
 			);
 			path = ViewComponent;
 			sourceTree = "<group>";
@@ -593,6 +599,8 @@
 				B49258D62A9B31D8000983D9 /* MainTab+ChildView.swift in Sources */,
 				B4860AE02A98F3990008EFBE /* RemoteImageState.swift in Sources */,
 				B4860AE12A98F3990008EFBE /* RemoteImageService.swift in Sources */,
+				B49258D82A9B424B000983D9 /* DownloadButton.swift in Sources */,
+				B49258DA2A9B428E000983D9 /* ShareButton.swift in Sources */,
 				B4860AD22A98F3990008EFBE /* ActivityView.swift in Sources */,
 				B4860ACE2A98F3990008EFBE /* DetailHeaderSectionModel.swift in Sources */,
 				B4860AD92A98F3990008EFBE /* DetailReleaseNoteSection.swift in Sources */,

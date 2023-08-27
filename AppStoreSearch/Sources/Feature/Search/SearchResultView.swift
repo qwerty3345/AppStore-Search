@@ -69,16 +69,7 @@ struct SearchResultView: View {
 
       Spacer()
 
-      Button {
-
-      } label: {
-        Text("받기")
-          .foregroundColor(.blue)
-          .fontWeight(.bold)
-          .frame(width: 80, height: 32)
-          .background(.gray.opacity(0.2))
-          .cornerRadius(16)
-      }
+      DownloadButton(action: {})
     }
   }
 
