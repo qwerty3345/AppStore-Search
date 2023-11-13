@@ -6,20 +6,25 @@
 //
 
 import SwiftUI
-import Core
+//import Core
+import ComposableArchitecture
 
 struct SearchResultView: View {
 
   // MARK: - Properties
 
-  let results: [SearchResult]
-  @EnvironmentObject var store: StoreOf<SearchReducer>
+//  let results: [SearchResult]
+  private let viewStore: ViewStoreOf<SearchReducer>
+
+  init(viewStore: ViewStoreOf<SearchReducer>) {
+    self.viewStore = viewStore
+  }
 
   // MARK: - Body
 
   var body: some View {
     List {
-      ForEach(results) { result in
+      ForEach(viewStore.searchResults) { result in
         VStack {
           SearchResultHeaderView(result: result)
 
@@ -35,7 +40,7 @@ struct SearchResultView: View {
         .listRowSeparator(.hidden)
       }
 
-      if !results.isEmpty && !store.state.isLimit {
+      if !viewStore.searchResults.isEmpty && !viewStore.isLimit {
         bottomProgressView
       }
     }
@@ -51,7 +56,7 @@ struct SearchResultView: View {
         .id(UUID()) // 여러번 페이징 후 사라지는 현상 해결
         .progressViewStyle(.circular)
         .onAppear {
-          store.dispatch(.loadMore)
+          viewStore.send(.loadMore)
         }
       Spacer()
     }
@@ -146,13 +151,13 @@ struct ResultScreenShotImageView: View {
 
 // MARK: - Preview
 
-struct SearchResultView_Previews: PreviewProvider {
-  static var previews: some View {
-    SearchResultView(
-      results: Array(SearchResponse.mock.results.prefix(3))
-    )
-    .environmentObject(
-      Store(reducer: SearchReducer())
-    )
-  }
-}
+//struct SearchResultView_Previews: PreviewProvider {
+//  static var previews: some View {
+//    SearchResultView(
+//      results: Array(SearchResponse.mock.results.prefix(3))
+//    )
+//    .environmentObject(
+//      Store(reducer: SearchReducer())
+//    )
+//  }
+//}

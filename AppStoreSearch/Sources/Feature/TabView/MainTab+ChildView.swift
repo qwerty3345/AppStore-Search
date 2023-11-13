@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Core
+import ComposableArchitecture
 
 extension MainTab {
   @ViewBuilder
@@ -16,10 +16,11 @@ extension MainTab {
     case .game: placeholderView
     case .app: placeholderView
     case .arcade: placeholderView
-    case .search: SearchView()
-        .environmentObject(
-          Store(reducer: SearchReducer())
-        )
+    case .search: SearchView(
+      store: StoreOf<SearchReducer>.init(initialState: SearchReducer.initialState, reducer: {
+        SearchReducer()
+      })
+    )
     }
   }
 

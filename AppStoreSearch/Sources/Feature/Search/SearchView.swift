@@ -6,13 +6,18 @@
 //
 
 import SwiftUI
-import Core
+//import Core
+import ComposableArchitecture
 
 struct SearchView: View {
 
   // MARK: - Properties
 
-  @EnvironmentObject var store: StoreOf<SearchReducer>
+  @ObservedObject private var viewStore: ViewStoreOf<SearchReducer>
+
+  init(store: StoreOf<SearchReducer>) {
+    self.viewStore = ViewStore(store, observe: { $0 })
+  }
 
   // MARK: - Body
 
@@ -27,37 +32,37 @@ struct SearchView: View {
     .searchable(
       text:
         Binding(
-          get: { store.state.searchText },
-          set: { store.dispatch(.change(searchText: $0)) }
+          get: { viewStore.searchText },
+          set: { viewStore.send(.change(searchText: $0)) }
         ),
       placement: .navigationBarDrawer(displayMode: .always),
       prompt: "App Store"
     )
     .searchSuggestions {
-      if store.state.showingState == .searching {
+      if viewStore.showingState == .searching {
         suggestionView
       }
     }
     .onSubmit(of: .search) {
-      store.dispatch(.search)
+      viewStore.send(.search)
     }
     .onAppear {
-      store.dispatch(.onAppear)
+      viewStore.send(.onAppear)
     }
-    .animation(.easeInOut, value: store.state.showingState)
-    .animation(.easeInOut, value: store.state.searchResults)
+    .animation(.easeInOut, value: viewStore.showingState)
+    .animation(.easeInOut, value: viewStore.searchResults)
   }
 
   // MARK: - Private Methods
 
   @ViewBuilder
   private var showingList: some View {
-    switch store.state.showingState {
+    switch viewStore.showingState {
     case .searching:
       recentSearchList
 
     case .showingResult:
-      SearchResultView(results: store.state.searchResults)
+      SearchResultView(viewStore: viewStore)
 
     case .loading:
       ProgressView().progressViewStyle(.circular)
@@ -72,9 +77,9 @@ struct SearchView: View {
 
   private var recentSearchList: some View {
     Section {
-      List(store.state.histories, id: \.self) { data in
+      List(viewStore.histories, id: \.self) { data in
         Button {
-          store.dispatch(.selectToSearch(text: data))
+          viewStore.send(.selectToSearch(text: data))
         } label: {
           Text(data)
             .foregroundColor(.blue)
@@ -97,7 +102,7 @@ struct SearchView: View {
   }
 
   private var suggestionView: some View {
-    ForEach(store.state.suggestions, id: \.self) { suggestion in
+    ForEach(viewStore.suggestions, id: \.self) { suggestion in
       HStack(spacing: 0) {
         Text("")  // Image가 가장 앞에 있으면 Divider가 살짝 잘리는 이슈 때문에 추가함.
 
@@ -106,7 +111,7 @@ struct SearchView: View {
         Text(suggestion)
       }
       .onTapGesture {
-        store.dispatch(.selectToSearch(text: suggestion))
+        viewStore.send(.selectToSearch(text: suggestion))
       }
     }
     .listStyle(.plain)
@@ -145,10 +150,10 @@ struct SearchView: View {
 
 struct SearchView_Previews: PreviewProvider {
   static var previews: some View {
-    SearchView()
-      .environmentObject(
-        Store(reducer: SearchReducer())
-      )
+    SearchView(store: StoreOf<SearchReducer>(initialState: SearchReducer.State(), reducer: {}))
+//      .environmentObject(
+//        Store(reducer: SearchReducer())
+//      )
   }
 }
 

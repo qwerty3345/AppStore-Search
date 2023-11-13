@@ -8,6 +8,7 @@
 import Foundation
 import Core
 import Combine
+import Dependencies
 
 protocol SearchServiceProtocol {
   /// countLimit 최대 200
@@ -18,7 +19,7 @@ struct SearchService: SearchServiceProtocol {
 
   // MARK: - Properties
 
-  @Inject private var router: NetworkRouterProtocol
+  private let router = NetworkRouter()
 
   // MARK: - Public Methods
 
@@ -29,5 +30,16 @@ struct SearchService: SearchServiceProtocol {
     )
     .map { $0.results }
     .eraseToAnyPublisher()
+  }
+}
+
+extension SearchService: DependencyKey {
+  static var liveValue: SearchService = Self()
+}
+
+extension DependencyValues {
+  var searchService: SearchService {
+    get { self[SearchService.self] }
+    set { self[SearchService.self] = newValue }
   }
 }

@@ -6,14 +6,14 @@
 //
 
 import Foundation
-import Core
 import Combine
+import ComposableArchitecture
 
-final class SearchReducer: ReducerProtocol {
+final class SearchReducer: Reducer {
 
   // MARK: - State, Action
 
-  struct State {
+  struct State: Equatable {
     var searchText: String = ""
     var countLimit: Int = searchCountLimitUnit
     var showingState: ShowingState = .searching
@@ -38,17 +38,17 @@ final class SearchReducer: ReducerProtocol {
 
   // MARK: - Properties
 
-  let initialState: State = .init()
+  static let initialState: State = .init()
 
-  @Inject private var searchService: SearchServiceProtocol
-  @Inject private var historyService: HistoryServiceProtocol
+  @Dependency(\.searchService) private var searchService: SearchService
+  @Dependency(\.historyService) private var historyService: HistoryService
 
   private static let searchCountLimitUnit: Int = 20
   private static let searchCountMaxLimit: Int = 200
 
   // MARK: - Public Methods
 
-  func reduce(state: inout State, action: Action) -> Effect {
+  func reduce(into state: inout State, action: Action) -> Effect<Action> {
     switch action {
     case .onAppear:
       state.histories = historyService.fetchHistories()
@@ -70,14 +70,12 @@ final class SearchReducer: ReducerProtocol {
 
     case let .selectToSearch(text: text):
       state.searchText = text
-      return .publisher(
-        Just(.search).eraseToAnyPublisher()
-      )
+      return .send(.search)
 
     case .fetchError:
       state.showingState = .showingError
     }
-    
+
     return .none
   }
 
@@ -94,7 +92,7 @@ final class SearchReducer: ReducerProtocol {
     }
   }
 
-  private func searchAction(_ state: inout State) -> Effect? {
+  private func searchAction(_ state: inout State) -> Effect<Action>? {
     guard state.showingState != .loading,
           !state.searchText.isEmpty else { return nil }
     let keyword = state.searchText
@@ -106,18 +104,17 @@ final class SearchReducer: ReducerProtocol {
     return searchServiceEffect(state)
   }
 
-  private func searchServiceEffect(_ state: State) -> Effect {
+  private func searchServiceEffect(_ state: State) -> Effect<Action> {
     let keyword = state.searchText
-    return .publisher(
-      searchService.search(of: keyword, countLimit: state.countLimit)
+    return .publisher {
+      self.searchService.search(of: keyword, countLimit: state.countLimit)
         .map { results in
           Action.fetchComplete(results: results)
         }
         .catch { error in
           Just(Action.fetchError)
         }
-        .eraseToAnyPublisher()
-    )
+    }
   }
 
   private func fetchCompleteAction(_ state: inout State, results: [SearchResult]) {

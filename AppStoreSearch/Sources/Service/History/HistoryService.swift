@@ -7,6 +7,7 @@
 
 import Foundation
 import Core
+import Dependencies
 
 protocol HistoryServiceProtocol {
   func fetchHistories() -> [String]
@@ -40,5 +41,16 @@ final class HistoryService: HistoryServiceProtocol {
     }
 
     histories.insert(history, at: 0)
+  }
+}
+
+extension HistoryService: DependencyKey {
+  static var liveValue: HistoryService = HistoryService()
+}
+
+extension DependencyValues {
+  var historyService: HistoryService {
+    get { self[HistoryService.self] }
+    set { self[HistoryService.self] = newValue }
   }
 }

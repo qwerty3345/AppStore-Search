@@ -9,9 +9,7 @@ import SwiftUI
 
 @main
 struct ios_itunes_searchApp: App {
-  init() {
-    AppEnvironment().registerDependencies()
-  }
+  init() {}
 
   var body: some Scene {
     WindowGroup {
